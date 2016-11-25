@@ -1,0 +1,27 @@
+{
+  "name": "saci",
+  "homepage": "https://github.com/felipejlrita/Saci",
+  "authors": [
+    "Felipe J. L. Rita <felipe.rita@dcomp.sor.ufscar.br>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "^0.97.8",
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.7",
+    "angular-resource": "^1.5.7",
+    "font-awesome": "^4.7.0",
+    "bootstrap": "^3.3.7",
+    "bootstrap-select": "^1.12.1",
+    "bootstrap-datepicker": "^1.6.4"
+  }
+}

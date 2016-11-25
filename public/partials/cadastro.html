@@ -1,0 +1,231 @@
+<ol class="breadcrumb">
+	<div class="container">
+		<div class="col-sm-10 col-sm-offset-1">
+		  <li><a href="/#/">Página inicial</a></li>
+		  <li class="active">Cadastrar voo</li>		
+		</div>
+	</div>
+</ol>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1">
+				
+			<form ng-submit="Home.cadastrar()">
+				
+				<!-- Trigger the modal with a button -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAeroporto">Selecionar aeroportos</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
+				<select class="selectpicker" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')">
+					<option ng-repeat="option in Home.data.Aeronave" value="{{option.modelo}}">
+						{{ option.modelo }}
+					</option>
+				</select>
+				<div class="input-group date" >
+				  <input class="form-control" ui-mask="99/99/99" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_partida" type="text" >
+				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+				<div class="input-group date" >
+				  <input class="form-control" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" type="text" ng-model="Home.form.hora_partida">
+				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+				<div class="input-group date" >
+				  <input class="form-control" ui-mask="99/99/99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" ng-model="Home.form.data_chegada" type="text">
+				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+				<div class="input-group date" >
+				  <input class="form-control" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  ng-model="Home.form.hora_chegada" type="text">
+				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				</div>
+				<button type="submit" class="btn btn-primary">Cadastrar voo</button>
+			</form>
+
+		</div>		
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div id="modalCompanhia" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Buscar companhias</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">Você pode combinar filtros ou não utilizar nenhum DIY :)</div>
+        <form class="row" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formDataC.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formDataC.cidade" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formDataC.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <button class="btn btn-primary">Pesquisar</button>
+						</div>
+        	</div>
+        </form>
+	
+				<div class="panel panel-default" ng-show="Home.data.Companhia.length">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Companhias encontradas</div>
+
+					<div class="list-group">
+						<a class="list-group-item hover picker" ng-repeat="(key, el) in Home.data.Companhia"
+							ng-click="Home.setVal(el.codigo, 'companhia')" id="comp-{{ el.codigo }}">
+							<span class="list-header">{{ el.nome }}</span><br>
+							<span class="list-body">
+								{{ el.sigla }} | Código identificador: {{ el.codigo }}
+							</span>
+		    		</a>
+					</div>
+				</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modalAeroporto" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Buscar aeroportos</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">Você pode combinar filtrosou não utilizar nenhum DIY :)</div>
+        <form class="row" ng-submit="Home.search(Home.formData, 'Aeroporto')" ng-model="Home.formData">
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formData.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formData.cidade" class="form-control" placeholder="Cidade" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">@</span>
+						  <input type="text" ng-model="Home.formData.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
+						</div>
+        	</div>
+        	<div class="col-sm-3">
+	        	<div class="input-group">
+						  <button class="btn btn-primary">Pesquisar</button>
+						</div>
+        	</div>
+        </form>
+
+				<div class="panel panel-default" ng-show="Home.createData.origem || Home.createData.destino || Home.createData.escala.length">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Aeroportos selecionados</div>
+			  	<div class="list-group">
+						<a class="list-group-item hover" ng-click="" ng-show="Home.createData.origem">
+							<span class="actions">
+								<i class="fa fa-close hover" data-item="{{ Home.createData.origem.codigo }}" ng-click="Home.remove('origem')"></i>
+							</span>
+			    		<span class="list-header">{{ Home.createData.origem.nome }}</span><br>
+							<span class="list-body">
+								{{ Home.createData.origem.cidade }}, {{ Home.createData.origem.estado }}
+							</span><br>
+							<span>Aeroporto de origem</span>
+		    		</a>
+		    		<a class="list-group-item hover"
+		    			ng-repeat="(key, el) in Home.createData.escala" ng-show="Home.createData.escala">
+							<span class="actions">
+								<i class="fa fa-close hover" data-item="{{ el.el.codigo }}" ng-click="Home.remove('escala', key)"></i>
+							</span>
+			    		<span class="list-header">{{ el.el.nome }}</span><br>
+							<span class="list-body">
+								{{ el.el.cidade }}, {{ el.el.estado }}<br>
+								<span>Aeroporto de escala</span>
+							</span>
+		    		</a>
+						<a class="list-group-item hover" ng-click="" ng-show="Home.createData.destino">
+							<span class="actions">
+								<i class="fa fa-close hover" data-item="{{ Home.createData.destino.codigo }}" ng-click="Home.remove('destino')"></i>
+							</span>
+			    		<span class="list-header">{{ Home.createData.destino.nome }}</span><br>
+							<span class="list-body">
+								{{ Home.createData.destino.cidade }}, {{ Home.createData.destino.estado }}
+							</span><br>
+							<span>Aeroporto de destino</span>
+		    		</a>
+					</div>
+			  </div>
+	
+				<div class="panel panel-default" ng-show="Home.data.Aeroporto.length && ( Home.data.Aeroporto.length-Home.createData.escala.length-2 || !(Home.createData.origem && Home.createData.destino)  )">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Aeroportos encontrados</div>
+
+					<div class="list-group">
+						<a class="list-group-item hover" ng-repeat="(key, el) in Home.data.Aeroporto" id="list-{{ el.codigo }}">
+			    		<script type="text/javascript-lazy">
+			    			$('[data-toggle="tooltip"]').tooltip(); 
+			    		</script>
+							<span class="actions results">
+								<i ng-hide="Home.createData.origem" class="fa fa-street-view" aria-hidden="true" data-placement="bottom" data-toggle="tooltip" title="Selecionar origem" ng-click="Home.setVal(el, 'origem')"></i>
+								<i  data-placement="bottom" data-toggle="tooltip" title="Selecionar escala" class="fa fa-map-signs" aria-hidden="true" ng-click="Home.setEscala(el, key)"></i>
+								<i ng-hide="Home.createData.destino" class="fa fa-map-marker"  data-placement="bottom" data-toggle="tooltip" title="Selecionar destino" aria-hidden="true" ng-click="Home.setVal(el, 'destino')"></i>
+							</span>
+			    		<span class="list-header">{{ el.nome }}</span><br>
+							<span class="list-body">
+								{{ el.cidade }}, {{ el.estado }}
+							</span>
+		    		</a>
+					</div>
+				</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript-lazy">
+	$('[data-toggle="tooltip"]').tooltip();
+
+	setTimeout( function(){
+		$('.selectpicker').selectpicker();
+	}, 200 );
+
+	$(document).on( 'click', 'a.picker', function(){
+		$('a.picker').removeClass('success');
+		$(this).addClass('success');
+	})
+	$(document).on( 'click', '.actions.results i', function(){
+		this.parentNode.parentNode.style.display = 'none';
+	});
+</script>
