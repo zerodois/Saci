@@ -2,14 +2,18 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 00:56:08
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-24 23:40:25
+* @Last Modified time: 2016-11-25 17:32:11
 */
 
-nav { box-shadow: none; }
-.breadcrumb { color: #333 !important; opacity: 0.7; }
-.breadcrumb::before { color: #333 !important; opacity: 0.7; }
-.nav-wrapper .breadcrumb:last-child { opacity: 1; }
-//.modal { width: 75% !important ; }
+/* Fonts */
+ @import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+
+/* Partial templates */
+@import 'variables';
+@import 'bootstrap_template';
+
+/* Colors */
+.color-1 { background-color: $template-color; }
 
 /* Classes auxiliares */
 .t-margin { margin-top: 20px; }
@@ -18,21 +22,64 @@ nav { box-shadow: none; }
 .pb-0 { padding-bottom: 0 !important; }
 .hover { cursor: pointer; }
 .success { background-color: #B8F2CB !important; }
+.window { padding: 30px; background-color: white; }
+.text-ident {
+	text-indent: 30px;
+}
+.shadow {
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+}
 
-.list-group-item {
-	.list-header {
-		color: #222;
-		font-size: 1.1em;
+.navbar-default {
+	background-color: $template-color;
+	border: none;
+	height: $navbar-size;
+	.navbar-brand, .navbar-brand:hover {
+		font-size: 2em;
+		padding: 0 15px;
+		color: $text-color;
+		height: $navbar-size;
+		line-height: $navbar-size;
 	}
-	.actions {
-		display: block;
-		float: right;
-		color: #222;
-		size: 3em;
-		i {
-			opacity: 0.7;
-			margin: 0 10px;
-			&:hover{ opacity: 1; }
+}
+
+.explicacao {
+	div {
+		font-family: 'Open Sans', sans-serif;
+		line-height: 25px;
+	}
+	.icons-line {
+		text-align: center;
+		img {
+			margin: 25px 40px;
+			height: 50px;
+			width: 50px;
 		}
 	}
+}
+
+.p-top {
+	padding-top: 10px;
+}
+.no-pad-left {
+	padding-left: 2px;
+}
+.no-pad-right {
+	padding-right: 2px;
+}
+.content {
+	margin-top: 50px;
+	.explicacao {
+		margin-top: 50px;
+	}
+}
+
+.navbar-title {
+	font-size: 2em;
+	font-weight: 500;
+	line-height: $navbar-size;
+	color: $text-color;
+	font-family: 'Roboto', sans-serif;
 }

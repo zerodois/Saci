@@ -1,0 +1,62 @@
+/*
+* @Author: Felipe J. L. Rita
+* @Date:   2016-11-25 14:51:44
+* @Last Modified by:   Felipe J. L. Rita
+* @Last Modified time: 2016-11-25 17:31:38
+*/
+
+.breadcrumb { color: #333 !important; opacity: 0.7; }
+.breadcrumb::before { color: #333 !important; opacity: 0.7; }
+.nav-wrapper .breadcrumb:last-child { opacity: 1; }
+.dropdown-menu>.active>a { color: $text-color !important; background-color: $template-color; }
+
+form .row {
+	margin-bottom: 10px;
+}
+.form-header {
+	font-family: 'Roboto', sans-serif;
+	font-size: 2em;
+	font-weight: bold
+}
+
+ol.breadcrumb{
+	height: $breadcrumb-size;
+	padding: 0;
+	background-color: white;
+	-webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+	li {
+		font-family: 'Roboto', sans-serif;
+		font-size: 1.3em;
+		color: #333;
+		line-height: $breadcrumb-size;
+		height: $breadcrumb-size;
+		display: inline-block;
+		padding: 0 15px;
+		a { color: #000; opacity: 0.7; }
+		a:hover { text-decoration: none; opacity: 1; }
+	}
+}
+
+
+/* Buttons */
+.open>.dropdown-toggle.btn-primary { background-color: transparent !important; }
+.btn {
+	border-radius: 3px !important;
+	background-color: transparent;
+	border:  thin solid #666;
+	color: #666;
+	opacity: 0.8;
+	transition: all 0.2s linear;
+	outline: none !important;
+	&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: #666; }
+	&.btn-primary {
+		color: $template-color !important;
+		border-color: $template-color !important;
+		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: $template-color; }
+	}
+}
+.bootstrap-select>.dropdown-toggle.bs-placeholder {
+	color: #666 !important;
+}

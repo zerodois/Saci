@@ -1,46 +1,96 @@
+<div ng-include src="'public/partials/header.html'"></div>
 <ol class="breadcrumb">
 	<div class="container">
 		<div class="col-sm-10 col-sm-offset-1">
 		  <li><a href="/#/">Página inicial</a></li>
-		  <li class="active">Cadastrar voo</li>		
+		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+		  <li class="active">Cadastrar voo</li>
 		</div>
 	</div>
 </ol>
 
 <div class="container">
-	<div class="row">
-		<div class="col-sm-10 col-sm-offset-1">
-				
-			<form ng-submit="Home.cadastrar()">
-				
-				<!-- Trigger the modal with a button -->
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAeroporto">Selecionar aeroportos</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
-				<select class="selectpicker" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')">
-					<option ng-repeat="option in Home.data.Aeronave" value="{{option.modelo}}">
-						{{ option.modelo }}
-					</option>
-				</select>
-				<div class="input-group date" >
-				  <input class="form-control" ui-mask="99/99/99" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_partida" type="text" >
-				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	<div class="row content">
+		<div class="col-sm-8 explicacao">
+			
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="row">
+					<div class="col-sm-12 text-ident">
+						Para cadastrar um voo é necessário: uma origem e um destino, uma companhia responsável por esse voo, e qual modelo de aeronave será utilizado nesse voo, além de uma data e horário de partida e ambas as estimações para a chegada				
+					</div>
 				</div>
-				<div class="input-group date" >
-				  <input class="form-control" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" type="text" ng-model="Home.form.hora_partida">
-				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<div class="icons-line">
+					<img src="public/images/departures.svg" alt="">				
+					<img src="public/images/arrival.svg" alt="">				
+					<img src="public/images/plane-ticket.svg" alt="">				
+					<img src="public/images/alarm-clock.svg" alt="">				
 				</div>
-				<div class="input-group date" >
-				  <input class="form-control" ui-mask="99/99/99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" ng-model="Home.form.data_chegada" type="text">
-				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						Aeroportos de escala também podem ser inseridos no itinerário de seu voo, a partir do botão "Selecionar aeroportos" :)
+					</div>
 				</div>
-				<div class="input-group date" >
-				  <input class="form-control" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  ng-model="Home.form.hora_chegada" type="text">
-				  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-				</div>
-				<button type="submit" class="btn btn-primary">Cadastrar voo</button>
-			</form>
+			</div>
 
-		</div>		
+		</div>
+		<div class="col-sm-4 window">
+			<form ng-submit="Home.cadastrar()">
+
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-block" data-toggle="modal" data-target="#modalAeroporto">Selecionar aeroportos</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-block" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="select-picker input-group-btn" data-style="" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')">
+						<option disabled selected value> -- Selecione um modelo de aeronave -- </option>
+							<option ng-repeat="option in Home.data.Aeronave" value="{{option.modelo}}">
+								{{ option.modelo }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 no-pad-right">
+						<div class="input-group date" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_partida" type="text" >
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-lg-6 no-pad-left">
+						<div class="input-group time" >
+						  <input class="form-control text-center" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" type="text" ng-model="Home.form.hora_partida">
+						  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 no-pad-right">
+						<div class="input-group date" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" ng-model="Home.form.data_chegada" type="text">
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-lg-6 no-pad-left">
+						<div class="input-group date" >
+						  <input class="form-control text-center" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  ng-model="Home.form.hora_chegada" type="text">
+						  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 p-top">
+						<button type="submit" class="btn btn-primary btn-block">Cadastrar voo</button>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 
@@ -217,9 +267,10 @@
 <script type="text/javascript-lazy">
 	$('[data-toggle="tooltip"]').tooltip();
 
+
 	setTimeout( function(){
-		$('.selectpicker').selectpicker();
-	}, 200 );
+		$('.select-picker').selectpicker();
+	}, 500 );
 
 	$(document).on( 'click', 'a.picker', function(){
 		$('a.picker').removeClass('success');
@@ -228,4 +279,5 @@
 	$(document).on( 'click', '.actions.results i', function(){
 		this.parentNode.parentNode.style.display = 'none';
 	});
+
 </script>

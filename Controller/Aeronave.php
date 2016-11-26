@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-24 15:32:28
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-24 23:49:42
+ * @Last Modified time: 2016-11-25 14:27:14
  */
 
 include_once '../Model/Aeronave.php';
@@ -17,4 +17,4 @@ $arr = [];
 foreach( $all as $item )
 	$arr[] = [ 'modelo' => $item->getModelo(), 'tripulacao' => $item->getQtdTripulacao(), 'passageiros' => $item->getQtdpassageiro(), 'capacidade' => $item->getQtdTripulacao()+$item->getQtdpassageiro() ];
 
-echo json_encode( [ 'data'=>$arr ] );
+echo json_encode( [ 'size'=>count($arr), 'data'=>$arr ] );

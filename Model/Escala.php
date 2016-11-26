@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-22 18:58:31
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-22 19:51:54
+ * @Last Modified time: 2016-11-25 02:57:13
  */
 
 namespace Model;
@@ -43,7 +43,7 @@ class Escala {
 
 	public function gravar() {
 		$sqlInsert = "insert into Escala values('%s', '%s')";
-		return DB::executarComando( sprintf( $sqlInsert, $this->voo->getCodigo, $this->aeroporto->getCodigo ) );
+		return DB::executarComando( sprintf( $sqlInsert, $this->voo->getCodigo(), $this->aeroporto->getCodigo() ) );
 	}
 
 	public function remover() {

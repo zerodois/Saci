@@ -2,14 +2,15 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:21:18
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-25 02:19:32
+* @Last Modified time: 2016-11-25 17:22:48
 */
 
 var app = angular.module('saci');
 app.controller( 'HomeController', HomeController );
 
-function HomeController( $resource, URL ) {
+function HomeController( $resource, URL, $scope ) {
 
+	$scope.title = 'Cadastro de voos';
 	var self = this;
 	self.search = search;
 	self.data = {};
@@ -43,7 +44,7 @@ function HomeController( $resource, URL ) {
 		let $Service = $resource( `${URL}/Controller/${destiny}.php` );
 		let $promise   = $Service.get( data ).$promise;
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( json=>{ self.data[ destiny ] = json.data; });
+		$promise.then( json=>{ self.data[ destiny ] = json.data; console.log(self.data); });
 	};
 
 	function cadastrar() {
@@ -60,4 +61,4 @@ function HomeController( $resource, URL ) {
 	}
 
 }
-HomeController['$inject'] = [ '$resource', 'URL' ];
+HomeController['$inject'] = [ '$resource', 'URL', '$scope' ];
