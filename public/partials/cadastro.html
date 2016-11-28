@@ -4,7 +4,7 @@
 		<div class="col-sm-10 col-sm-offset-1">
 		  <li><a href="/#/">Página inicial</a></li>
 		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
-		  <li class="active">Cadastrar voo</li>
+		  <li class="active">Cadastro de voo</li>
 		</div>
 	</div>
 </ol>
@@ -13,10 +13,10 @@
 	<div class="row content">
 		<div class="col-sm-8 explicacao">
 			
-			<div class="col-sm-10 col-sm-offset-1">
+			<div class="col-sm-10 col-sm-offset-1" ng-if="!Home.editar">
 				<div class="row">
 					<div class="col-sm-12 text-ident">
-						Para cadastrar um voo é necessário: uma origem e um destino, uma companhia responsável por esse voo, e qual modelo de aeronave será utilizado nesse voo, além de uma data e horário de partida e ambas as estimações para a chegada				
+						Para cadastrar um voo é necessário: uma origem e um destino, uma companhia responsável por esse voo, e qual modelo de aeronave será utilizado nesse voo, além de uma data e horário de partida e ambas as estimações para a chegada 
 					</div>
 				</div>
 				<div class="icons-line">
@@ -31,10 +31,28 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-10 col-sm-offset-1" ng-if="Home.editar">
+				<div class="row">
+					<div class="col-sm-12 text-ident">
+						A edição de voos segue o padrão de cadastro, sendo assim, todas as informações disponíveis no cadastro estão presentes, tais como: aeroportos de origem, partida e escalas, horários e companhia responsável
+					</div>
+				</div>
+				<div class="icons-line">
+					<img src="public/images/departure_green.svg" alt="">				
+					<img src="public/images/arrival_green.svg" alt="">				
+					<img src="public/images/control-tower.svg" alt="">				
+					<img src="public/images/watch.svg" alt="">				
+				</div>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						A edição do status do voo deve ser feita diretamente no menu de buscas de forma rápida e eficaz :)
+					</div>
+				</div>
+			</div>
 
 		</div>
 		<div class="col-sm-4 window">
-			<form ng-submit="Home.cadastrar()">
+			<form ng-submit="Home.cadastrar()" name="formDados" novalidate>
 
 				<div class="row">
 					<div class="col-sm-12">
@@ -48,7 +66,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<select class="select-picker input-group-btn" data-style="" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')">
+						<select class="select-picker input-group-btn" tabindex="{{ Home.form.modelo_aeronave }}" data-style="" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')" required>
 						<option disabled selected value> -- Selecione um modelo de aeronave -- </option>
 							<option ng-repeat="option in Home.data.Aeronave" value="{{option.modelo}}">
 								{{ option.modelo }}
@@ -59,34 +77,34 @@
 				<div class="row">
 					<div class="col-lg-6 no-pad-right">
 						<div class="input-group date" >
-						  <input class="form-control text-center" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_partida" type="text" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data de partida" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_partida" type="text" required name="data_partida">
 						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>
 					</div>
-					<div class="col-lg-6 no-pad-left">
+					<div class="col-lg-6 no-pad-left text-center">
 						<div class="input-group time" >
-						  <input class="form-control text-center" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" type="text" ng-model="Home.form.hora_partida">
+						  <input class="form-control text-center" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_" type="text" ng-model="Home.form.hora_partida" placeholder="Hora de partida" required name="hora_partida">
 						  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-lg-6 no-pad-right">
+					<div class="col-lg-6 no-pad-right text-center">
 						<div class="input-group date" >
-						  <input class="form-control text-center" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_"  name="event_date" ng-model="Home.form.data_chegada" type="text">
+						  <input class="form-control text-center" placeholder="Data de chegada" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Home.form.data_chegada" type="text" name="data_chegada">
 						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>
 					</div>
-					<div class="col-lg-6 no-pad-left">
+					<div class="col-lg-6 no-pad-left text-center">
 						<div class="input-group date" >
-						  <input class="form-control text-center" ui-mask="99:99" ui-mask-placeholder ui-mask-placeholder-char="_"  ng-model="Home.form.hora_chegada" type="text">
+						  <input class="form-control text-center" ui-mask="99:99" placeholder="Hora de chegada" ui-mask-placeholder ui-mask-placeholder-char="_"  ng-model="Home.form.hora_chegada" type="text" required name="hora_chegada">
 						  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12 p-top">
-						<button type="submit" class="btn btn-primary btn-block">Cadastrar voo</button>
+						<button ng-disabled="!formDados.$valid || !Home.createData.origem || !Home.createData.destino || !Home.createData.companhia" type="submit" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn btn-block">{{ Home.editar?'Editar':'Cadastrar' }} voo</button>
 					</div>
 				</div>
 			</form>
@@ -106,32 +124,33 @@
         <h4 class="modal-title">Buscar companhias</h4>
       </div>
       <div class="modal-body">
-      	<div class="row">Você pode combinar filtros ou não utilizar nenhum DIY :)</div>
-        <form class="row" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formDataC.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formDataC.cidade" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formDataC.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <button class="btn btn-primary">Pesquisar</button>
-						</div>
-        	</div>
-        </form>
+      	<div class="row">
+	        <form class="col-sm-10 col-sm-offset-1" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
+	        	<div class="row">
+		        	<div class="col-sm-3 no-pad-right">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formDataC.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-right no-pad-left">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formDataC.cidade" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-right no-pad-left">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formDataC.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-left">
+							  <button ng-class="Home.editar?'btn-success':'btn-primary'" class="btn btn-block">Pesquisar</button>
+		        	</div>
+	        	</div>
+	        </form>
+      	</div>
 	
 				<div class="panel panel-default" ng-show="Home.data.Companhia.length">
 				  <!-- Default panel contents -->
@@ -150,7 +169,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn" data-dismiss="modal">Confirmar</button>
       </div>
     </div>
 
@@ -168,32 +187,34 @@
         <h4 class="modal-title">Buscar aeroportos</h4>
       </div>
       <div class="modal-body">
-      	<div class="row">Você pode combinar filtrosou não utilizar nenhum DIY :)</div>
-        <form class="row" ng-submit="Home.search(Home.formData, 'Aeroporto')" ng-model="Home.formData">
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formData.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formData.cidade" class="form-control" placeholder="Cidade" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <span class="input-group-addon" id="sizing-addon2">@</span>
-						  <input type="text" ng-model="Home.formData.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
-						</div>
-        	</div>
-        	<div class="col-sm-3">
-	        	<div class="input-group">
-						  <button class="btn btn-primary">Pesquisar</button>
-						</div>
-        	</div>
-        </form>
+      	<div class="row"><div class="col-sm-6 col-sm-offset-1">Você pode combinar filtros ou não utilizar nenhum DIY :)</div></div>
+      	<div class="row">
+	        <form class="col-lg-10 col-sm-offset-1" ng-submit="Home.search(Home.formData, 'Aeroporto')" ng-model="Home.formData">
+	        	<div class="row">
+		        	<div class="col-sm-3 no-pad-right">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formData.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-right no-pad-left">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formData.cidade" class="form-control" placeholder="Cidade" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-left no-pad-right">
+			        	<div class="input-group">
+								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <input type="text" ng-model="Home.formData.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
+								</div>
+		        	</div>
+		        	<div class="col-sm-3 no-pad-left">
+							  <button ng-class="Home.editar?'btn-success':'btn-primary'" class="btn btn-block">Pesquisar</button>
+		        	</div>
+	        	</div>
+	        </form>
+      	</div>
 
 				<div class="panel panel-default" ng-show="Home.createData.origem || Home.createData.destino || Home.createData.escala.length">
 				  <!-- Default panel contents -->
@@ -257,7 +278,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn" data-dismiss="modal">Confirmar</button>
       </div>
     </div>
 
@@ -266,7 +287,6 @@
 
 <script type="text/javascript-lazy">
 	$('[data-toggle="tooltip"]').tooltip();
-
 
 	setTimeout( function(){
 		$('.select-picker').selectpicker();

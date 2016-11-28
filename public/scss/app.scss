@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 00:56:08
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-25 17:32:11
+* @Last Modified time: 2016-11-27 17:49:10
 */
 
 /* Fonts */
@@ -14,6 +14,8 @@
 
 /* Colors */
 .color-1 { background-color: $template-color; }
+.color-2 { background-color: $secondary-color; }
+.color-3 { background-color: $three-color; }
 
 /* Classes auxiliares */
 .t-margin { margin-top: 20px; }
@@ -33,7 +35,7 @@
 }
 
 .navbar-default {
-	background-color: $template-color;
+	//background-color: $template-color;
 	border: none;
 	height: $navbar-size;
 	.navbar-brand, .navbar-brand:hover {
@@ -58,6 +60,11 @@
 			width: 50px;
 		}
 	}
+}
+
+span.actions {
+	display: block;
+	float: right;
 }
 
 .p-top {

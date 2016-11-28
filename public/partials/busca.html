@@ -1,0 +1,173 @@
+<div ng-include src="'public/partials/header.html'"></div>
+
+<ol class="breadcrumb">
+	<div class="container">
+		<div class="col-sm-10 col-sm-offset-1">
+		  <li><a href="/#/">Página inicial</a></li>
+		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+		  <li class="active">Buscar voo</li>
+		</div>
+	</div>
+</ol>
+
+<div class="container">
+	<div class="row content">
+		<div class="col-sm-8 explicacao">
+			
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="row">
+					<div class="col-sm-12 text-ident">
+						Para buscar um voo, os seguintes filtros encontram-se disponíveis: origem, destino, escala, nome da companhia responsável, perído e por último mas não menos importante, o cógido identificador do voo. 
+					</div>
+				</div>
+				<div class="icons-line">
+					<img src="public/images/departure_red.svg" alt="">				
+					<img src="public/images/arrival_red.svg" alt="">				
+					<img src="public/images/passport_red.svg" alt="">				
+					<img src="public/images/calendar_red.svg" alt="">				
+				</div>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						Os filtros descritos podem ser combinados ou ainda deixados em branco. Deixá-los em branco deixará nossa busca mais ampla.
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col-sm-4 window">
+			<form ng-submit="Busca.submit()" ng-model="Busca.data" name="formDados" novalidate>
+				<div class="row">
+					<div class="col-sm-12 p-top">
+						<input type="text" class="form-control" ng-model="Busca.data.codigo" placeholder="Código idenficador do voo">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="select-picker input-group-btn" ng-model="Busca.data.origem" data-style="" data-live-search="true" required>
+							<option selected value> -- Qualquer origem -- </option>
+							<option ng-repeat="option in Busca.Aeroporto.data" value="{{option.codigo}}">
+								{{ option.nome }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="select-picker input-group-btn" ng-model="Busca.data.destino" data-style="" data-live-search="true" required>
+							<option selected value> -- Qualquer destino -- </option>
+							<option ng-repeat="option in Busca.Aeroporto.data" value="{{option.codigo}}">
+								{{ option.nome }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="select-picker input-group-btn" ng-model="Busca.data.escalas" multiple data-actions-box="true" data-live-search="true" required title="-- Qualquer escala --"  data-selected-text-format="count > 1">
+							<option ng-repeat="option in Busca.Aeroporto.data" value="{{option.codigo}}">
+								{{ option.nome }}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="select-picker input-group-btn" data-style="" ng-model="Busca.data.companhia" data-live-search="true" required>
+							<option selected value> -- Qualquer companhia -- </option>
+							<option ng-repeat="option in Busca.Companhia.data" value="{{option.codigo}}">
+								{{ option.nome }}
+							</option>
+
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 no-pad-right">
+						<div class="input-group date" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data de partida" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_partida" type="text" required name="data_partida">
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-lg-6 no-pad-left text-center">
+						<div class="input-group date" >
+						  <input class="form-control text-center" placeholder="Data de chegada" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_chegada" type="text" name="data_chegada">
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 p-top">
+						<button type="submit" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modalBusca">Pesquisar voos</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div id="modalBusca" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Resultados encontrados</h4>
+      </div>
+      <div class="modal-body">
+
+				<div class="list-group">
+					<li class="list-group-item picker"
+						ng-repeat="(key, el) in Busca.arr" id="res-{{ el.codigo }}">
+						<span class="actions">
+							Status:
+							<select ng-model="Busca.arr[el.codigo].status" 
+								role="listbox" tabindex="{{ Busca.arr[el.codigo].status }}"
+								ng-change="Busca.changeStatus(el.codigo)" data-style="btn-transparent" class="select-picker status" id="select-{{ el.codigo }}" data-width="fit">
+							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'confirmado' }}" data-content="<span class='label label-success'>Confirmado</span>" value="confirmado">Confirmado</option>
+							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'cancelado' }}" data-content="<span class='label label-danger'>Cancelado</span>" value="cancelado">Cancelado</option>
+							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'ativo' }}" data-content="<span class='label label-warning'>Ativo</span>" value="ativo">Ativo</option>
+							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'finalizado' }}" data-content="<span class='label label-info'>Finalizado</span>" value="finalizado">Finalizado</option>
+							</select> | 
+							<a href="{{ URL }}/#/edit/{{ el.codigo }}" class="dismiss"><i class="fa fa-pencil hover" aria-hidden="true" data-toggle="tooltip" title="Editar voo"></i></a>
+							<script type="text/javascript-lazy">
+								$('.dismiss').click( ()=>{ $('#modalBusca').modal('hide'); });
+								$('[data-toggle="tooltip"]').tooltip();
+								$( ".select-picker.status" ).each(function() {
+									var $input = $(this);
+									setTimeout( function(){
+										$input.selectpicker();
+									}, 200 );
+								});
+							</script>
+						</span>
+						<strong>VOO #{{ el.codigo }}</strong><br>
+						Origem do voo: {{ el.origem }} <br>
+						Destino do voo: {{ el.destino }}<br>
+						Aeronave responsável: {{ el.aeronave }}<br>
+						Partida: {{ el.partida }} | Chegada: {{ el.chegada }}
+	    		</li>
+				</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript-lazy">
+	$('[data-toggle="tooltip"]').tooltip();
+
+	setTimeout( function(){
+		$('.select-picker').selectpicker({
+			selectAllText: 'Selecionar todos',
+	    deselectAllText: 'Remover todos',
+			countSelectedText: '{0} aeroportos selecionados'
+		});
+	}, 500 );
+</script>

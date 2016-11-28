@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 15:22:04
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-22 19:31:07
+ * @Last Modified time: 2016-11-28 12:46:18
  */
 
 namespace DB;
@@ -26,10 +26,22 @@ class DB {
     $conn  	 = mysqli_connect( self::$host, self::$usuario, self::$senha, self::$nome );
     $conn->set_charset( 'utf8' );
     $query   = $conn->query( $sql );
-    $resul = [ 'affected_rows' => $conn->affected_rows, 'insert_id' => $conn->insert_id ];
+    $resul = [ 'affected_rows' => $conn->affected_rows, 'insert_id' => $conn->insert_id, 'error' => $conn->error ];
     $conn->close();
     
     return $resul;
+  }
+
+  public static function formatHour( $hour ) {
+    return substr($hour, 0, 5);
+  }
+  public static function formatDate( $date ) {
+    return "{$date[8]}{$date[9]}/{$date[5]}{$date[6]}/{$date[0]}{$date[1]}{$date[2]}{$date[3]}";
+  }
+
+  public static function clearTable( $table, $where='' ) {
+    $sql = "delete from {$table} {$where}";
+    return self::executarComando( $sql );
   }
 
   //Funcão para execução de uma busca na base de dados

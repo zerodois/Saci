@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-25 14:51:44
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-25 17:31:38
+* @Last Modified time: 2016-11-27 18:34:23
 */
 
 .breadcrumb { color: #333 !important; opacity: 0.7; }
@@ -50,13 +50,35 @@ ol.breadcrumb{
 	opacity: 0.8;
 	transition: all 0.2s linear;
 	outline: none !important;
-	&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: #666; }
-	&.btn-primary {
+	&:hover, &:active, &:focus, &:active:hover, &:active:focus { 
+		&:not([disabled=disabled]) { opacity: 1; } background-color: transparent; color: #666; }
+	&[disabled=disabled] {
+		color: #999 !important;
+		border-color: #999 !important;
+		background-color: #eee !important;
+	}
+	&.btn-primary:not([disabled=disabled]) {
 		color: $template-color !important;
 		border-color: $template-color !important;
 		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: $template-color; }
 	}
+	&.btn-success:not([disabled=disabled]) {
+		color: $three-color !important;
+		border-color: $three-color !important;
+		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: $three-color; }
+	}
+	&.btn-transparent:not([disabled=disabled]) {
+		border: none;
+		padding: 0;
+		span.bs-caret { display: none; }
+	}
+	&.btn-danger:not([disabled=disabled]) {
+		color: $secondary-color !important;
+		border-color: $secondary-color !important;
+		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: $secondary-color; }
+	}
 }
+.btn-group.open .dropdown-toggle { box-shadow: none; }
 .bootstrap-select>.dropdown-toggle.bs-placeholder {
 	color: #666 !important;
 }

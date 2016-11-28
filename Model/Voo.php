@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 20:11:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-22 19:47:22
+ * @Last Modified time: 2016-11-28 12:50:02
  */
 
 namespace Model;
@@ -14,6 +14,10 @@ include_once '../Model/Horario.php';
 include_once '../Model/Companhia.php';
 
 use DB\DB;
+use Model\Horario;
+use Model\Aeroporto;
+use Model\Aeronave;
+use Model\Companhia;
 
 class Voo {
 
@@ -37,6 +41,12 @@ class Voo {
 		$this->aeronave  = array_key_exists( 'aeronave', $data ) ? $data['aeronave'] : new Aeronave();
 	}
 
+	public function getPartida() {
+		return $this->saida;
+	}
+	public function getChegada() {
+		return $this->chegada;
+	}
 	public function getStatus() {
     return $this->status;
   }
@@ -44,7 +54,18 @@ class Voo {
     $this->status = $status;
     return $this;
   }
-
+  public function getOrigem() {
+  	return $this->origem;
+  }
+  public function getAeronave() {
+  	return $this->aeronave;
+  }
+  public function getCompanhia() {
+  	return $this->companhia;
+  }
+  public function getDestino() {
+  	return $this->destino;
+  }
   public function getCodigo() {
     return $this->codigo;
   }
@@ -67,7 +88,7 @@ class Voo {
 
   	if( $this->codigo )
   		return DB::executarComando( $update );
-  	
+
   	$arr = DB::executarComando( $insert );
   	$this->codigo = $arr['insert_id'];
   	return $this;
@@ -75,7 +96,7 @@ class Voo {
 
   public static function buscar( $filtro='' ) {
 
-  	$sqlBusca   = "select * from Voo %s";
+  	$sqlBusca   = "select Voo.* from Voo %s";
 		$where = $filtro;
 		if( $filtro != '' )
 			$where = sprintf( 'where %s', $filtro );
