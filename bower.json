@@ -15,13 +15,11 @@
     "tests"
   ],
   "dependencies": {
-    "materialize": "^0.97.8",
     "angular": "^1.5.8",
     "angular-route": "^1.5.7",
     "angular-resource": "^1.5.7",
     "font-awesome": "^4.7.0",
     "bootstrap": "^3.3.7",
     "bootstrap-select": "^1.12.1",
-    "bootstrap-datepicker": "^1.6.4"
   }
 }
