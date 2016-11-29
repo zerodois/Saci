@@ -1,4 +1,5 @@
 .phpintel
+composer.lock
 bower_components
 
 /vendor/
