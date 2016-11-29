@@ -1,0 +1,186 @@
+<div ng-include src="'public/partials/header.html'"></div>
+
+<style>
+	.window { margin-top: 70px; }
+	.explicacao { text-align: justify }
+</style>
+
+<ol class="breadcrumb">
+	<div class="container">
+		<div class="col-sm-10 col-sm-offset-1">
+		  <li><a href="/#/">Página inicial</a></li>
+		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+		  <li class="active">Gerar relatório</li>
+		</div>
+	</div>
+</ol>
+
+<div class="container">
+	<div class="row content">
+		<div class="col-sm-8 explicacao">
+			
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="row">
+					<div class="col-sm-12 text-ident" ng-show="!Relatorio.form.tipo">
+						Bem vindo a unidade de relatórios :)
+						Para criar um relatório, você precisa selecionar qual tipo de relatório deseja, e seguir as instruções fornecidas por ele. É fácil, eu prometo
+					</div>
+					<div class="col-sm-12 text-ident" ng-show="Relatorio.form.tipo==1">
+						Neste relatório é gerada uma lista com a quantidade de voos semanais para um dado período de tempo. Esse período de tempo deve ser informado nas caixas ao lado: "Data inicial" e "Data final"
+					</div>
+				</div>
+				<div class="icons-line">
+					<i class="fa fa-globe text-info" aria-hidden="true"></i>
+					<i class="fa fa-plane text-info" aria-hidden="true"></i>
+					<i class="fa fa-clock-o text-info" aria-hidden="true"></i>
+					<i class="fa fa-file text-info" aria-hidden="true"></i>
+				</div>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						Após inserir as informações necessárias, utilize o botão "Gerar relatório" para visualizar as informações obtidas pelo nosso sistema :)
+					</div>
+				</div>
+				<br>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						Lembrando ainda que se você veio aqui por engano, pode voltar a página inicial através do botão "Cancelar", ou ainda atráves da barra de navegação
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col-sm-4 window">
+			<form ng-submit="Relatorio.submit()" ng-model="Relatorio.data" name="formDados" novalidate>
+				<div class="row">
+					<div class="col-sm-12">
+						<select class="selectpicker input-group-btn" ng-model="Relatorio.form.tipo" data-style="btn-info" required>
+							<option disabled selected value> -- Selecione o relatório -- </option>
+							<option value="1">Voos semanais por país</option>
+							<option value="2">Voos de uma companhia aérea</option>
+							<option value="3">Número de voos cancelados por companhia</option>
+							<option value="4">Ranking de voos</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 no-pad-right">
+						<div class="input-group date" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data inicial" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Relatorio.form.data_inicio" type="text" required name="data_partida">
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-lg-6 no-pad-left text-center">
+						<div class="input-group time" >
+						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data final" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Relatorio.form.data_fim" type="text" required name="data_partida">
+						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="row" ng-if="Relatorio.form.tipo==2">
+					<div class="col-sm-12">
+						<select class="selectpicker input-group-btn" data-live-search="true"
+							ng-model="Relatorio.form.companhia" data-style="btn-info" required>
+							<option disabled selected value> -- Selecione uma companhia -- </option>
+							<option ng-repeat="(key, option) in Relatorio.Companhia.data" value="{{ key+1 }}">
+								{{ option.sigla }} - {{ option.nome }}
+							</option>
+						</select>
+					</div>
+					<script type="text/javascript-lazy">
+						setTimeout( function(){
+							$('.selectpicker').selectpicker();
+						}, 200 );
+					</script>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 p-top">
+						<button type="submit" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalRelatorio">Gerar relatório</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="modalRelatorio" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{ Relatorio.types[ Relatorio.form.tipo-1 ] }}</h4>
+      </div>
+      <div class="modal-body pad-0">
+				<ul class="list-group" ng-if="Relatorio.form.tipo==1">
+					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp">
+						<div class="list-header">De {{ key }} até {{ item.fim }}</div>
+						<div class="list" ng-repeat="pais in item.dados">
+							{{ pais.pais }}: {{ pais.contagem }}
+						</div>
+					</li>
+				</ul>
+				<ul class="list-group" ng-if="Relatorio.form.tipo==3">
+					<div class="row" style="padding: 10px;">
+						<div class="col-sm-10 col-sm-offset-1">
+							<input type="text" class="form-control" ng-model="Relatorio.filtro">
+						</div>
+					</div>
+					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp.data | filter: Relatorio.filtro">
+						<div class="list-header">{{ item.sigla }} - {{ item.nome }}</div>
+						<div class="list">
+							Código: {{ item.codigo }} 
+						</div>
+						<div class="list">
+							{{ item.contagem }} voos cancelados
+						</div>
+					</li>
+				</ul>
+				<ul class="list-group" ng-if="Relatorio.form.tipo==4">
+					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp.data">
+						<div class="list-header">#{{ key+1 }} - Voo {{ item.codigo }} </div>
+						<div class="list">
+							Origem do voo: {{ item.origem }}
+						</div>
+						<div class="list">
+							Destino do voo: {{ item.destino }}
+						</div>
+						<div class="list">
+							Número de escalas: {{ item.contagem }}
+						</div>
+					</li>
+				</ul>
+				<ul class="list-group" ng-if="Relatorio.form.tipo==2">
+					<li class="list-group-item list-cool">
+						<div class="list-header">#{{ Relatorio.form.companhia }} {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].sigla }} - {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].nome }}</div>
+						<div class="list">
+							<strong>Total de voos no período selecionado: {{ Relatorio.resp.total }}</strong>
+						</div>
+						<div class="list">
+							<span>Voos ativos: {{ Relatorio.resp.ativos }}</span><br>
+						</div>
+						<div class="list">
+							<span>Voos confirmados: {{ Relatorio.resp.confirmados }}</span><br>
+						</div>
+						<div class="list">
+							<span>Voos finalizados: {{ Relatorio.resp.finalizados }}</span><br>
+						</div>
+						<div class="list">
+							<span>Voos cancelados: {{ Relatorio.resp.cancelados }}</span><br>
+						</div>
+					</li>
+				</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript-lazy">
+	setTimeout( function(){
+		$('.selectpicker').selectpicker();
+	}, 200 );
+</script>

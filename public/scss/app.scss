@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 00:56:08
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-27 17:49:10
+* @Last Modified time: 2016-11-28 22:19:41
 */
 
 /* Fonts */
@@ -16,6 +16,9 @@
 .color-1 { background-color: $template-color; }
 .color-2 { background-color: $secondary-color; }
 .color-3 { background-color: $three-color; }
+.color-4 { background-color: $four-color; }
+
+.text-info { color: $four-color; }
 
 /* Classes auxiliares */
 .t-margin { margin-top: 20px; }
@@ -28,6 +31,7 @@
 .text-ident {
 	text-indent: 30px;
 }
+.pad-0{ padding: 0; }
 .shadow {
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
@@ -54,6 +58,7 @@
 	}
 	.icons-line {
 		text-align: center;
+		i { font-size: 50px; margin: 25px 40px; }
 		img {
 			margin: 25px 40px;
 			height: 50px;
@@ -89,4 +94,13 @@ span.actions {
 	line-height: $navbar-size;
 	color: $text-color;
 	font-family: 'Roboto', sans-serif;
+}
+
+.list-cool {
+	border: none;
+	border-radius: 0;
+	border-top: thin solid #ddd;
+	&:first-child{ border-top: none; } 
+	.list-header { font-size: 1.2em; }
+	.list{ text-indent: 10px; }
 }

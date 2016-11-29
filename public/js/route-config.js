@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:32:10
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-27 17:23:28
+* @Last Modified time: 2016-11-28 18:58:13
 */
 
 
@@ -31,6 +31,12 @@ angular.module('saci')
 			templateUrl: 'public/partials/cadastro.html',
 			controller: 'HomeController',
 			controllerAs: 'Home'
+		});
+
+		$routeProvider.when('/report', {
+			templateUrl: 'public/partials/relatorio.html',
+			controller: 'RelatorioController',
+			controllerAs: 'Relatorio'
 		});
 
   });

@@ -1,0 +1,12 @@
+{
+    "name": "felipe/saci",
+    "authors": [
+        {
+            "name": "Felipe J. L. Rita",
+            "email": "felipe.rita@dcomp.sor.ufscar.br"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "^1.21"
+    }
+}

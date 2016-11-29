@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 17:21:08
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-22 19:50:34
+ * @Last Modified time: 2016-11-29 01:04:16
  */
 
 namespace Model;
@@ -50,11 +50,16 @@ class Companhia {
 		return $arr;
   }
 
+  public function obterContagemVoos($dataInicio, $dataFinal) {
+  	$sql = "select count(*) as total , count(if(status='ativo',1,null)) as ativos, count(if(status='confirmado',1,null)) as confirmados, count(if(status='finalizado',1,null)) as finalizados, count(if(status='cancelado',1,null)) as cancelados from Voo where cod_companhia = '{$this->codigo}' and data_partida >= '{$dataInicio}' and data_chegada <= '{$dataFinal}'";
+  	
+		return DB::executarConsulta( $sql )[0];
+  }
+
   public static function buscarComCancelados( $dataInicio, $dataFinal ) {
+  	$sqlInner = "select Companhia.*, count(if(status='cancelado',1,null)) as contagem from Companhia join Voo on Voo.cod_companhia = Companhia.codigo where data_partida >= '{$dataInicio}' and data_chegada <= '{$dataFinal}' group by codigo order by contagem desc, nome";
 
-  	$sqlInner = "select Companhia.*, count( if( status='cancelado', 1, null ) ) as contagem from Companhia inner join Voo on Voo.cod_companhia = Companhia.codigo where data_partida between '%s' and '%s' group by codigo";
-
-		$vetor = DB::executarConsulta( sprintf( $sqlInner, $dataInicio, $dataFinal ) );
+		$vetor = DB::executarConsulta( $sqlInner );
 		$arr   = [];
 
 		foreach( $vetor as $item )

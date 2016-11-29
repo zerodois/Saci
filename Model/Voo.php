@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 20:11:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-28 12:50:02
+ * @Last Modified time: 2016-11-29 00:44:48
  */
 
 namespace Model;
@@ -12,12 +12,14 @@ include_once '../Model/Aeronave.php';
 include_once '../Model/Aeroporto.php';
 include_once '../Model/Horario.php';
 include_once '../Model/Companhia.php';
+include_once '../vendor/autoload.php';
 
 use DB\DB;
 use Model\Horario;
 use Model\Aeroporto;
 use Model\Aeronave;
 use Model\Companhia;
+use Carbon\Carbon;
 
 class Voo {
 
@@ -121,9 +123,11 @@ class Voo {
 
   public static function obterRanking( $dataInicio, $dataFinal ) {
 		
-		$sqlRanking = "select Voo.*, count(Escala.cod_voo) as contagem from Voo left join Escala on Escala.cod_voo=Voo.codigo where Voo.data_partida>='%s' and Voo.data_chegada<='%s' group by Voo.codigo order by contagem desc";
+		$sqlRanking = "select Voo.*, count(Escala.cod_voo) as contagem from Voo left join Escala on Escala.cod_voo = Voo.codigo
+			where data_partida >= '{$dataInicio}' and data_chegada <= '{$dataFinal}'
+			group by Voo.codigo order by contagem desc, Voo.codigo";
 
-		$vetor = DB::executarConsulta( sprintf( $sqlRanking, $dataInicio, $dataFinal ) );
+		$vetor = DB::executarConsulta( $sqlRanking );
 		$arr   = [];
 
 		foreach ( $vetor as $el ) {
@@ -143,9 +147,28 @@ class Voo {
 
   public static function obterNumVoosPorPais( $dataInicio, $dataFinal ) {
 
-  	$sqlVoos    = "select Aeroporto.pais, count(Voo.codigo) as contagem from Voo right join Aeroporto on Voo.cod_destino = Aeroporto.codigo where Voo.data_partida>='%s' and Voo.data_chegada<='%s' group by Aeroporto.pais";
+  	$sqlVoos    = "select pais, count(Voo.codigo) as contagem, datediff(data_chegada, '{$dataInicio}' ) div 7 as semana from Voo right join Aeroporto on Voo.cod_destino = Aeroporto.codigo where data_partida >= '{$dataInicio}' and data_chegada <= '{$dataFinal}' group by pais,semana order by semana,pais";
 
-  	return DB::executarConsulta( sprintf( $sqlVoos, $dataInicio, $dataFinal ) );
+  	$data    = Carbon::createFromFormat('Y-m-d H', $dataInicio.' 00');
+  	$last = -1;
+		$tmp     = '';
+		$json = [];
+		$arr  = DB::executarConsulta( $sqlVoos );
+		$var;
+
+		foreach( $arr as $item ) {
+
+			$week   = intval( $item['semana'] );
+			if( $last != $week ) {
+				$tmp  = $data->addWeeks( $week )->format('d/m/Y');
+				$last = $week;
+				$var  = $data;
+			}
+			array_key_exists( $tmp, $json ) ?: $json[ $tmp ] = [ 'fim' => $var->addDays(6)->format('d/m/Y') ];
+			$json[ $tmp ][ 'dados' ][] = $item;
+		}
+
+		return $json;
   }
 
 }

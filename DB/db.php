@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 15:22:04
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-28 12:46:18
+ * @Last Modified time: 2016-11-28 21:38:03
  */
 
 namespace DB;
@@ -14,7 +14,7 @@ class DB {
 
   //Variáveis para a conexão com o banco
   private static $host = 'localhost';
-  private static $nome = 'saci';
+  private static $nome = 'Airport';
   private static $usuario = 'root';
   private static $senha = 'baseLocal';
   private static $conexao;
