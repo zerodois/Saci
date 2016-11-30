@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-28 20:22:09
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-29 01:07:17
+ * @Last Modified time: 2016-11-30 14:13:32
  */
 
 ini_set('display_errors', 1);
@@ -19,20 +19,20 @@ use Model\Companhia;
 use Model\Voo;
 
 $method  = $_GET;
-$inicio  = '2016-11-20';//inverte( $method['data_inicio'] );
-$fim 		 = '2016-12-20';//inverte( $method['data_fim'] );
+$inicio  = inverte( $method['data_inicio'] );
+$fim 		 = inverte( $method['data_fim'] );
 $last    = -1;
 $tmp     = '';
 $comp    = ( isset( $method['companhia'] ) ) ? trim( $method['companhia'] ): '';
 
 if( $_GET['tipo'] == '1' )
-	echo json_encode( getPaisSemana( $inicio, $fim ) );
+	echo json_encode( 'data' => getPaisSemana( $inicio, $fim ) );
 else if( $_GET['tipo'] == '2' )
-	echo json_encode( getVoosCompanhia( $inicio, $fim, $comp ) );
+	echo json_encode( 'data' => getVoosCompanhia( $inicio, $fim, $comp ) );
 else if( $_GET['tipo'] == '3' )
-	echo json_encode( getCancelados( $inicio, $fim ) );
+	echo json_encode( 'data' => getCancelados( $inicio, $fim ) );
 else if( $_GET['tipo'] == '4' )
-	echo json_encode( ranking( $inicio, $fim ) );
+	echo json_encode( 'data' => ranking( $inicio, $fim ) );
 
 function getCancelados( $inicio, $fim ) {
 	$arr = [];

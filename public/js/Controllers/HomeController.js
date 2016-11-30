@@ -2,13 +2,13 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:21:18
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-30 11:24:15
+* @Last Modified time: 2016-11-30 17:08:06
 */
 
 var app = angular.module('saci');
 app.controller( 'HomeController', HomeController );
 
-function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $location, flash ) {
+function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $location, flash, $timeout ) {
 
 	var self = this;
 	self.search = search;
@@ -28,6 +28,7 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	self.init      = init;
 	self.validate  = validate;
 	self.errors    = [];
+	self.warning   = [];
 	self.alert     = false;
 	self.filterSelect = filterSelect;
 
@@ -37,11 +38,11 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 		if( self.createData.destino && obj.codigo == self.createData.destino.codigo ) return false;
 		for( let i=0; i<self.createData.escala.length; i++ )
 			if( self.createData.escala[i].el.codigo == obj.codigo ) { exibe = false; break; }
-		console.log(exibe);
 		return exibe;
 	}
 
-	$scope.URL = URL;
+	$scope.loading = false;
+	$scope.URL 		 = URL;
 	if( $routeParams.id ) {
 		$scope.title = 'Edição de voos';
 		$scope.color = 3;
@@ -51,14 +52,16 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 		$scope.color = 1;		
 	}
 
-	function validate( clear ) {
-		if( clear ) return self.warning = [];
+	function validate( ) {
+
+		self.warning = [];
 		var alert = false;
 		if( !self.createData.origem )
 			self.warning = [ 'Você não inseriu uma origem para o voo' ];
 		if( !self.createData.destino )
 			self.warning.push( 'Você não inseriu um destino para o voo' );
-		if( self.createData.length ) return false;
+		if( self.warning.length ) return false;
+		
 		if( self.createData.origem.codigo != AEROPORTO && self.createData.destino.codigo != AEROPORTO )		
 			alert = true;
 		if( alert )
@@ -67,6 +70,7 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 			self.alert = true;
 			return self.warning = [ 'Aeroporto de Congonhas não está no trajeto informado' ];
 		}
+
 		self.warning = [];
 		self.alert = false;
 	}
@@ -89,11 +93,12 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	
 	function search( data, destiny, promise ){
 
+		$scope.loading = true;
 		let $Service = $resource( `${URL}/Controller/${destiny}.php` );
 		if( promise ) return $Service.get( data ).$promise;
 		let $promise = $Service.get( data ).$promise;
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( json=>{ self.data[ destiny ] = json.data; self.size[ destiny ] = json.data.length; }, err=>{console.log(err);});
+		$promise.then( json=>{ $scope.loading = false; self.data[ destiny ] = json.data; self.size[ destiny ] = json.data.length; }, err=>{console.log(err);});
 	};
 
 	function init() {
@@ -122,24 +127,28 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 		data.cod_destino = self.createData.destino.codigo;
 		data.escalas = self.createData.escala;
 		data.companhia = self.createData.companhia;
+		$scope.loading = true;
 		if( self.editar )
 			data.edit = $routeParams.id
 
 		let $promise   = $.post( `${URL}/Controller/Voo.php`, data );
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( success, err=>{ console.log(err); } );
+		$promise.then( success, err=>{ $scope.loading = false; } );
 	}
 
 	function success( ret ) {
-		var json = JSON.parse( ret );
-		if ( json.erro ) return self.errors = json.erro;
-		flash.setMessage( json.mensagem );
-		console.log( json );
-		if( self.editar )
-	    $location.path( '/search' );
-	  else
-	  	$location.path( '/' );
+		$timeout(function () {
+			$scope.loading = false;
+			var json = JSON.parse( ret );
+			if ( json.erro ) return self.errors = json.erro;
+			flash.setMessage( json.mensagem );
+			//console.log( json );
+			if( self.editar )
+		    $location.path( '/search' );
+		  else
+		  	$location.path( '/' );
+    }, 0);
 	}
 
 }
-HomeController['$inject'] = [ '$resource', 'URL', '$scope', '$routeParams', 'AEROPORTO', '$location', 'flash' ];
+HomeController['$inject'] = [ '$resource', 'URL', '$scope', '$routeParams', 'AEROPORTO', '$location', 'flash', '$timeout' ];

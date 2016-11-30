@@ -3,12 +3,13 @@
 <style>
 	.window { margin-top: 70px; }
 	.explicacao { text-align: justify }
+	.content { margin-top: 20px; }
 </style>
 
 <ol class="breadcrumb">
 	<div class="container">
 		<div class="col-sm-10 col-sm-offset-1">
-		  <li><a href="/#/">Página inicial</a></li>
+		  <li><a href="{{ URL }}/#/">Página inicial</a></li>
 		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
 		  <li class="active">Gerar relatório</li>
 		</div>
@@ -27,6 +28,15 @@
 					</div>
 					<div class="col-sm-12 text-ident" ng-show="Relatorio.form.tipo==1">
 						Neste relatório é gerada uma lista com a quantidade de voos semanais para um dado período de tempo. Esse período de tempo deve ser informado nas caixas ao lado: "Data inicial" e "Data final"
+					</div>
+					<div class="col-sm-12 text-ident" ng-show="Relatorio.form.tipo==2">
+						Neste relatório é gerada uma contagem de voos de uma determinado companhia aérea. Essa companhia deve ser selecionada através da caixa à direito, logo abaixo da data inicial e final
+					</div>
+					<div class="col-sm-12 text-ident" ng-show="Relatorio.form.tipo==3">
+						Realizamos a contagem de voos cancelados de cada companhia neste relatório em dado período. Esse período deve ser informado nas caixas de data ao lado.
+					</div>
+					<div class="col-sm-12 text-ident" ng-show="Relatorio.form.tipo==4">
+						Neste relatório é exibido um ranking de voos com relação a quantidade de escalas. Como os outros relatórios, também é necessário a inserção um período de tempo na caixa ao lado
 					</div>
 				</div>
 				<div class="icons-line">
@@ -95,7 +105,8 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12 p-top">
-						<button type="submit" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalRelatorio">Gerar relatório</button>
+						<button type="submit" class="btn btn-info btn-block"
+							data-toggle="modal" data-target="#modalRelatorio" ng-disabled="!formDados.$valid">Gerar relatório</button>
 					</div>
 				</div>
 			</form>
@@ -113,6 +124,9 @@
         <h4 class="modal-title">{{ Relatorio.types[ Relatorio.form.tipo-1 ] }}</h4>
       </div>
       <div class="modal-body pad-0">
+      	<div class="text-center p-top" ng-if="!Relatorio.resp.length">
+      		Não existem dados neste período de tempo para montar um relatório :(
+      	</div>
 				<ul class="list-group" ng-if="Relatorio.form.tipo==1">
 					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp">
 						<div class="list-header">De {{ key }} até {{ item.fim }}</div>
@@ -122,7 +136,7 @@
 					</li>
 				</ul>
 				<ul class="list-group" ng-if="Relatorio.form.tipo==3">
-					<div class="row" style="padding: 10px;">
+					<div class="row" style="padding: 10px;" ng-show="Relatorio.resp.data">
 						<div class="col-sm-10 col-sm-offset-1">
 							<input type="text" class="form-control" ng-model="Relatorio.filtro">
 						</div>
@@ -151,7 +165,7 @@
 						</div>
 					</li>
 				</ul>
-				<ul class="list-group" ng-if="Relatorio.form.tipo==2">
+				<ul class="list-group" ng-if="Relatorio.form.tipo==2 && Relatorio.resp.total">
 					<li class="list-group-item list-cool">
 						<div class="list-header">#{{ Relatorio.form.companhia }} {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].sigla }} - {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].nome }}</div>
 						<div class="list">

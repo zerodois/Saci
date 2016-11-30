@@ -6,7 +6,7 @@
 <ol class="breadcrumb">
 	<div class="container">
 		<div class="col-sm-10 col-sm-offset-1">
-		  <li><a href="/#/">Página inicial</a></li>
+		  <li><a href="{{ URL }}/#/">Página inicial</a></li>
 		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
 		  <li class="active">Buscar voo</li>
 		</div>
@@ -124,7 +124,9 @@
         <h4 class="modal-title">Resultados encontrados</h4>
       </div>
       <div class="modal-body">
-
+				<div class="text-center p-top" ng-if="!Busca.results">
+      		Sua busca não retornou nenhum dado do sistema. Tem certeza que preencheu os campos corretamente?
+      	</div>
 				<div class="list-group">
 					<li class="list-group-item picker"
 						ng-repeat="(key, el) in Busca.arr" id="res-{{ el.codigo }}">
@@ -145,7 +147,7 @@
 								$( ".select-picker.status" ).each(function() {
 									var $input = $(this);
 									setTimeout( function(){
-										$input.selectpicker();
+										$input.selectpicker({noneResultsText: 'Nenhum resultado encontrado'});
 									}, 200 );
 								});
 							</script>
@@ -172,6 +174,7 @@
 
 	setTimeout( function(){
 		$('.select-picker').selectpicker({
+			noneResultsText: 'Nenhum resultado encontrado',
 			selectAllText: 'Selecionar todos',
 	    deselectAllText: 'Remover todos',
 			countSelectedText: '{0} aeroportos selecionados'
