@@ -140,7 +140,7 @@
 							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'ativo' }}" data-content="<span class='label label-warning'>Ativo</span>" value="ativo">Ativo</option>
 							  <option ng-selected="{{ Busca.arr[el.codigo].status == 'finalizado' }}" data-content="<span class='label label-info'>Finalizado</span>" value="finalizado">Finalizado</option>
 							</select> | 
-							<a href="{{ URL }}/#/edit/{{ el.codigo }}" class="dismiss"><i class="fa fa-pencil hover" aria-hidden="true" data-toggle="tooltip" title="Editar voo"></i></a>
+							<a href="{{ URL }}/#/edit/{{ el.codigo }}" class="dismiss"><i class="fa fa-pencil hover" aria-hidden="true" data-toggle="tooltip" title="Editar/Replicar"></i></a>
 							<script type="text/javascript-lazy">
 								$('.dismiss').click( ()=>{ $('#modalBusca').modal('hide'); });
 								$('[data-toggle="tooltip"]').tooltip();

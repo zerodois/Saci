@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-30 11:32:19
+ * @Last Modified time: 2016-11-30 19:17:12
  */
 
 include_once '../Model/Voo.php';
@@ -65,44 +65,51 @@ if( count($errors) ){
 	return false;
 }
 
-$repete = isset( $method['qtd_replica'] ) && $method['qtd_replica'] != '' ? intval( $method[ 'qtd_replica' ] )+1 : 1;
+$repete = min ( isset( $method['qtd_replica'] ) && $method['qtd_replica'] != '' ? intval( $method[ 'qtd_replica' ] )+1 : 1,100 );
 $period = null;
-
-if ( isset( $method['periodo_replica'] ) && $method['periodo_replica'] == '1' )
-	$period = 'addDay';
-else if ( isset( $method['periodo_replica'] ) && $method['periodo_replica'] == '2' )
-	$period = 'addWeek';
-else if ( isset( $method['periodo_replica'] ) && $method['periodo_replica'] == '3' )
-	$period = 'addMonth';
-
+ 
+$quantity = '';
+if ( isset( $method['intervalo_replica'] ) && isset ( $method['unidade_replica'] ) && $method['unidade_replica'] == '1' ) {
+    $period = 'addDay';
+    $quantity = min( $method['intervalo_replica'],366 );
+}
+else if ( isset( $method['intervalo_replica'] ) && isset( $method['unidade_replica'] ) && $method['unidade_replica'] == '2' ) {
+    $period = 'addWeek';
+    $quantity = min( $method['intervalo_replica'],52 );
+}
+else if ( isset( $method['intervalo_replica'] ) && isset( $method['unidade_replica'] ) && $method['unidade_replica'] == '3' ) {
+    $period = 'addMonth';
+    $quantity = min( $method['intervalo_replica'],12 );
+}
+ 
 $voo = new Voo( $arr );
-
+ 
 for( $i=1; $i<=$repete; $i++ ) {
+ 
+  if( !( isset($arr['codigo']) && $i==1 ) )
+      $voo->setCodigo( null );
+  $json[] = $voo->gravar();
 
-	if( !( isset($arr['codigo']) && $i==1 ) )
-		$voo->setCodigo( null );
-	$json[] = $voo->gravar();
+  DB::clearTable('Escala', "where cod_voo={$voo->getCodigo()}");
 
-	DB::clearTable('Escala', "where cod_voo={$voo->getCodigo()}");
+  foreach( $escalas as $es ) {
+    $e = $es[ 'el' ];
+    $aeroporto = new Aeroporto( [ 'codigo'=>$e['codigo'], 'nome'=>$e['nome'], 'cidade'=>$e['cidade'], 'estado'=>$e['estado'], 'pais'=>$e['pais'] ] );
+    //Escala
+    $escala = new Escala( [ 'voo'=>$voo, 'aeroporto'=>$aeroporto ] );
+    $escala->gravar();
+  }
 
-	foreach( $escalas as $es ) {
-		$e = $es[ 'el' ];
-		$aeroporto = new Aeroporto( [ 'codigo'=>$e['codigo'], 'nome'=>$e['nome'], 'cidade'=>$e['cidade'], 'estado'=>$e['estado'], 'pais'=>$e['pais'] ] );
-		//Escala
-		$escala = new Escala( [ 'voo'=>$voo, 'aeroporto'=>$aeroporto ] );
-		$escala->gravar();
-	}
+  $data_p = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($voo->getPartida()->getData()).' '.formatHour($voo->getPartida()->getHora()) );
+  $data_c = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($voo->getChegada()->getData()).' '.formatHour($voo->getChegada()->getHora()) );
+  if( $period && $quantity ) {
+    $data_p = $data_p->$period($quantity);
+    $data_c = $data_c->$period($quantity);
+  }
 
-	$data_p = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($voo->getPartida()->getData()).' '.formatHour($voo->getPartida()->getHora()) );
-	$data_c = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($voo->getChegada()->getData()).' '.formatHour($voo->getChegada()->getHora()) );
-	if( $period ) {
-		$data_p = $data_p->$period();
-		$data_c = $data_c->$period();
-	}
-
-	$partida = [ 'data'=>$data_p->format('Ymd'), 'hora'=>$data_p->format('His') ];
-	$chegada = [ 'data'=>$data_c->format('Ymd'), 'hora'=>$data_c->format('His') ];
-	$voo->setPartida( new Horario( $partida ) )->setChegada( new Horario( $chegada ) );
+  $partida = [ 'data'=>$data_p->format('Ymd'), 'hora'=>$data_p->format('His') ];
+  $chegada = [ 'data'=>$data_c->format('Ymd'), 'hora'=>$data_c->format('His') ];
+  $voo->setPartida( new Horario( $partida ) )->setChegada( new Horario( $chegada ) );
 }
 
 if( isset( $method['edit'] ) )
