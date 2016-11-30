@@ -2,13 +2,13 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:21:18
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-29 23:58:39
+* @Last Modified time: 2016-11-30 11:24:15
 */
 
 var app = angular.module('saci');
 app.controller( 'HomeController', HomeController );
 
-function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO ) {
+function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $location, flash ) {
 
 	var self = this;
 	self.search = search;
@@ -41,6 +41,7 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO ) {
 		return exibe;
 	}
 
+	$scope.URL = URL;
 	if( $routeParams.id ) {
 		$scope.title = 'Edição de voos';
 		$scope.color = 3;
@@ -54,16 +55,17 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO ) {
 		if( clear ) return self.warning = [];
 		var alert = false;
 		if( !self.createData.origem )
-			return self.warning = [ 'Você não inseriu uma origem para o voo' ];
+			self.warning = [ 'Você não inseriu uma origem para o voo' ];
 		if( !self.createData.destino )
-			return self.warning = [ 'Você não inseriu um destino para o voo' ];
+			self.warning.push( 'Você não inseriu um destino para o voo' );
+		if( self.createData.length ) return false;
 		if( self.createData.origem.codigo != AEROPORTO && self.createData.destino.codigo != AEROPORTO )		
 			alert = true;
 		if( alert )
 			self.createData.escala.forEach( el=>{ console.log(AEROPORTO); if( el.el.codigo == AEROPORTO ) alert = false; } );
 		if( alert ) {
 			self.alert = true;
-			return self.warning = [ 'O Aeroporto de Congonhas não está no trajeto informado' ];
+			return self.warning = [ 'Aeroporto de Congonhas não está no trajeto informado' ];
 		}
 		self.warning = [];
 		self.alert = false;
@@ -91,7 +93,7 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO ) {
 		if( promise ) return $Service.get( data ).$promise;
 		let $promise = $Service.get( data ).$promise;
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( json=>{ self.data[ destiny ] = json.data; self.size[ destiny ] = json.data.length; });
+		$promise.then( json=>{ self.data[ destiny ] = json.data; self.size[ destiny ] = json.data.length; }, err=>{console.log(err);});
 	};
 
 	function init() {
@@ -125,13 +127,19 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO ) {
 
 		let $promise   = $.post( `${URL}/Controller/Voo.php`, data );
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( success, err=>{console.log(err);} );
+		$promise.then( success, err=>{ console.log(err); } );
 	}
 
 	function success( ret ) {
 		var json = JSON.parse( ret );
-		( json.erro ) ? self.errors = json.erro : false;
+		if ( json.erro ) return self.errors = json.erro;
+		flash.setMessage( json.mensagem );
+		console.log( json );
+		if( self.editar )
+	    $location.path( '/search' );
+	  else
+	  	$location.path( '/' );
 	}
 
 }
-HomeController['$inject'] = [ '$resource', 'URL', '$scope', '$routeParams', 'AEROPORTO' ];
+HomeController['$inject'] = [ '$resource', 'URL', '$scope', '$routeParams', 'AEROPORTO', '$location', 'flash' ];

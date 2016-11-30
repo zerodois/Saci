@@ -1,7 +1,63 @@
-<nav class="grey lighten-5 z-depth-1">
-  <div class="nav-wrapper container">
-    <div class="col s12">
-      <a href="#!" class="breadcrumb">Página inicial</a>
-    </div>
-  </div>
-</nav>
+<div ng-include src="'public/partials/header.html'"></div>
+<style>
+	.container { position: relative; }
+	.alert{ border: thin solid #999; color: #666; position: absolute; top: 10px; left: 50%; transform: translate(-50%); }
+</style>
+
+<ol class="breadcrumb">
+	<div class="container">
+		<div class="col-sm-10 col-sm-offset-1">
+		  <li><a href="{{ URL }}/#/">Página inicial</a></li>
+		</div>
+	</div>
+</ol>
+
+
+<div class="container">
+	<div class="row content">
+		<div class="alert alert-dismissible" ng-show="flash.getMessage()">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  <span>{{ flash.getMessage() }}</span>
+		</div>
+		<div class="col-sm-8 explicacao">
+			
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="row">
+					<div class="col-sm-12 text-ident">
+						Bem vindo ao sistema de controle de voos do Aeroporto de Congonhas. Todo sistema foi feito com muito carinho, amor, dedicação e sofrimento. Sendo assim, boa sorte e aproveite :)
+					</div>
+				</div>
+				<div class="icons-line">
+					<img src="public/images/calendar.svg" alt="">				
+					<img src="public/images/travel.svg" alt="">				
+					<img src="public/images/location.svg" alt="">				
+					<img src="public/images/geography.svg" alt="">				
+				</div>
+				<div class="row text-ident">
+					<div class="col-sm-12">
+						Para realizar uma ação, utilize os botões a direita e se ficar em dúvida sobre algo procure verificar a sessão de instruções, que se localiza à esquerda dos formulários.
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col-sm-4 window" style="margin-top: 50px;">
+			<div class="row">
+				<div class="col-sm-12 p-top">
+					<a href="{{ URL }}/#/new" class="btn btn-primary btn-block">Cadastrar voos</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 p-top">
+					<a href="{{ URL }}/#/search" class="btn btn-danger btn-block">Pesquisar voos</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 p-top">
+					<a href="{{ URL }}/#/report" class="btn btn-info btn-block">Gerar relatórios</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

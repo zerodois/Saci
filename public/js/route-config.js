@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:32:10
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-28 18:58:13
+* @Last Modified time: 2016-11-30 08:10:41
 */
 
 
@@ -11,8 +11,8 @@ angular.module('saci')
     
     $routeProvider.when('/', {
 			templateUrl: 'public/partials/home.html',
-			controller: 'HomeController',
-			controllerAs: 'Home'
+			controller: 'IndexController',
+			controllerAs: 'Index'
 		});
 
 		$routeProvider.when('/new', {

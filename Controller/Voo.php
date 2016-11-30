@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-29 21:31:48
+ * @Last Modified time: 2016-11-30 11:32:19
  */
 
 include_once '../Model/Voo.php';
@@ -39,6 +39,12 @@ $errors    = [];
 $data_p    = null;
 $data_c    = null;
 
+if( isset($method['edit']) ) {
+	$arr['codigo'] = $method['edit'];
+	$arr['status'] = $method['status'];
+} else
+	$arr['status'] = 'ativo';
+
 $now    = new Carbon();
 $data_p = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($saida->getData()).' '.formatHour($saida->getHora()) );
 $data_c = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($chegada->getData()).' '.formatHour($chegada->getHora()) );
@@ -51,19 +57,13 @@ if ( !validateDate( formatDate($chegada->getData()).' '.formatHour($chegada->get
 if( count($errors) ){
 	echo json_encode( [ 'erro' => $errors ] );
 	return false;
-} else if( $now->gte( $data_p ) ) {
+} else if( $now->gte( $data_p ) && $arr['status']!='finalizado' ) {
 	echo json_encode( [ 'erro' => ['Data informada anterior a data atual'] ] );
 	return false;
 } else if( $data_c->lte( $data_p ) ){
 	echo json_encode( [ 'erro' => ['Diferença entre data de partida e chegada inválida :('] ] );
 	return false;
 }
-
-if( isset($method['edit']) ) {
-	$arr['codigo'] = $method['edit'];
-	$arr['status'] = $method['status'];
-} else
-	$arr['status'] = 'ativo';
 
 $repete = isset( $method['qtd_replica'] ) && $method['qtd_replica'] != '' ? intval( $method[ 'qtd_replica' ] )+1 : 1;
 $period = null;
@@ -79,7 +79,8 @@ $voo = new Voo( $arr );
 
 for( $i=1; $i<=$repete; $i++ ) {
 
-	$voo->setCodigo( null );
+	if( !( isset($arr['codigo']) && $i==1 ) )
+		$voo->setCodigo( null );
 	$json[] = $voo->gravar();
 
 	DB::clearTable('Escala', "where cod_voo={$voo->getCodigo()}");
@@ -104,7 +105,10 @@ for( $i=1; $i<=$repete; $i++ ) {
 	$voo->setPartida( new Horario( $partida ) )->setChegada( new Horario( $chegada ) );
 }
 
-echo json_encode( ['mensagem'=>'Dados gravados com sucesso', 'data'=>$json] );
+if( isset( $method['edit'] ) )
+	echo json_encode( ['mensagem'=>"Você editou as informações do voo #{$arr['codigo']} :)", 'data'=> $arr ] );
+else
+	echo json_encode( ['mensagem'=>"Você cadastrou um voo :)", 'data'=>$json] );
 
 function validateDate($date, $format = 'Y-m-d H:i:s') {
   $d = DateTime::createFromFormat($format, $date);

@@ -2,16 +2,17 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-26 11:31:36
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-28 18:56:41
+* @Last Modified time: 2016-11-30 10:55:02
 */
 
 angular.module( 'saci' ).controller( 'BuscaController', BuscaController );
 
-function BuscaController( $scope, $resource, URL, $location ) {
+function BuscaController( $scope, $resource, URL, $location, flash ) {
 
 	$scope.title = 'Buscar voos';
 	$scope.color = 2;
 	$scope.URL   = URL;
+	$scope.flash = flash;
 
 	var self     = this;
 	self.submit  = submit;
@@ -42,4 +43,4 @@ function BuscaController( $scope, $resource, URL, $location ) {
 
 
 }
-BuscaController['$inject'] = [ '$scope', '$resource', 'URL', '$location' ];
+BuscaController['$inject'] = [ '$scope', '$resource', 'URL', '$location', 'flash' ];

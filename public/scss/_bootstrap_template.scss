@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-25 14:51:44
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-29 22:02:49
+* @Last Modified time: 2016-11-30 09:36:26
 */
 
 .breadcrumb { color: #333 !important; opacity: 0.7; }
@@ -71,6 +71,11 @@ ol.breadcrumb{
 		color: $four-color !important;
 		border-color: $four-color !important;
 		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color: $four-color; }
+	}
+	&.btn-white:not([disabled=disabled]) {
+		color: white !important;
+		border-color: white !important;
+		&:hover, &:active, &:focus, &:active:hover, &:active:focus { opacity: 1; background-color: transparent; color:white; }
 	}
 	&.btn-transparent:not([disabled=disabled]) {
 		border: none;

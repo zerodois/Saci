@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 15:22:04
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-28 21:38:03
+ * @Last Modified time: 2016-11-30 10:02:37
  */
 
 namespace DB;
@@ -16,7 +16,7 @@ class DB {
   private static $host = 'localhost';
   private static $nome = 'Airport';
   private static $usuario = 'root';
-  private static $senha = 'mistakenisapro';
+  private static $senha = 'baseLocal';
   private static $conexao;
 
   //Funcão para execução de um comando SQL

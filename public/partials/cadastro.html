@@ -4,7 +4,11 @@
 		<div class="col-sm-10 col-sm-offset-1">
 		  <li><a href="/#/">Página inicial</a></li>
 		  <i class="fa fa-chevron-right" aria-hidden="true"></i>
-		  <li class="active">Cadastro de voo</li>
+		  <span ng-if="Home.editar">
+			  <li><a href="{{ URL }}/#/search">Buscar voo</a></li>
+			  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+		  </span>
+		  <li class="active">{{ Home.editar? 'Edição de voo' : 'Cadastro de voo' }}</li>
 		</div>
 	</div>
 </ol>
@@ -64,7 +68,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<button type="button" class="btn btn-block" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
+						<button type="button" class="btn btn-block" id="select-companhia" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
 					</div>
 				</div>
 				<div class="row">
@@ -183,7 +187,7 @@
 		        	<div class="col-sm-3 no-pad-right no-pad-left">
 			        	<div class="input-group">
 								  <span class="input-group-addon" id="sizing-addon2">@</span>
-								  <input type="text" ng-model="Home.formDataC.cidade" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
+								  <input type="text" ng-model="Home.formDataC.sigla" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
 		        	<div class="col-sm-3 no-pad-right no-pad-left">
@@ -203,7 +207,7 @@
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Companhias encontradas</div>
 					<div class="list-group">
-						<a class="list-group-item hover picker" ng-repeat="(key, el) in Home.data.Companhia"
+						<a class="list-group-item hover picker" data-dismiss="modal" ng-repeat="(key, el) in Home.data.Companhia"
 							ng-click="Home.setVal(el.codigo, 'companhia')" id="comp-{{ el.codigo }}">
 							<span class="list-header">{{ el.sigla }} - {{ el.nome }}</span><br>
 							<span class="list-body">
@@ -254,7 +258,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" ng-click="Home.validate()" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Buscar aeroportos</h4>
       </div>
       <div class="modal-body">
@@ -365,9 +369,9 @@
 	}, 500 );
 
 	$(document).on( 'click', 'a.picker', function(){
-		$('a.picker').removeClass('success');
-		$(this).addClass('success');
+		$('#select-companhia').text( this.querySelector('.list-header').innerText );
 	})
+
 	$(document).on( 'click', '.actions.results i', function(){
 		this.parentNode.parentNode.style.display = 'none';
 	});
