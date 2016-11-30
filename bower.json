@@ -20,6 +20,6 @@
     "angular-resource": "^1.5.7",
     "font-awesome": "^4.7.0",
     "bootstrap": "^3.3.7",
-    "bootstrap-select": "^1.12.1",
+    "bootstrap-select": "^1.12.1"
   }
 }

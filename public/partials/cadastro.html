@@ -8,7 +8,6 @@
 		</div>
 	</div>
 </ol>
-
 <div class="container">
 	<div class="row content">
 		<div class="col-sm-8 explicacao">
@@ -52,6 +51,10 @@
 
 		</div>
 		<div class="col-sm-4 window">
+			<div class="errors col-sm-10" ng-show="Home.errors.length || Home.warning.length">
+				<div ng-repeat="erro in Home.errors track by $index">{{ erro }}</div>
+				<div ng-repeat="erro in Home.warning track by $index">{{ erro }}</div>
+			</div>
 			<form ng-submit="Home.cadastrar()" name="formDados" novalidate>
 
 				<div class="row">
@@ -103,18 +106,61 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" data-toggle="modal" data-target="#modalReplica" class="btn btn-block">Replicar voo</button>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-sm-12 p-top">
-						<button ng-disabled="!formDados.$valid || !Home.createData.origem || !Home.createData.destino || !Home.createData.companhia" type="submit" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn btn-block">{{ Home.editar?'Editar':'Cadastrar' }} voo</button>
+						<button ng-disabled="!formDados.$valid || !Home.createData.origem || !Home.createData.destino || !Home.createData.companhia || Home.warning.length" type="submit" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn btn-block">{{ Home.editar?'Editar':'Cadastrar' }} voo</button>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-
+<div class="modal fade" id="modalReplica" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Replicar voo</h4>
+			</div>
+			<div class="modal-body">
+				<form class="row" name="formReplica">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="row">
+							<div class="col-sm-12">
+								<select class="select-picker input-group-btn" ng-model="Home.form.periodo_replica" required>
+									<option disabled selected value>-- Selecione a periodicidade do voo --</option>
+									<option value="1">Diário</option>
+									<option value="2">Semanal</option>
+									<option value="3">Mensal</option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="input-group date">
+								  <input class="form-control text-center" ng-pattern="/^[0-9]*$/" 
+								  	placeholder="Quantidade de voos" ng-model="Home.form.qtd_replica" type="text" required name="qtd_replica">
+								  <span class="input-group-addon"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
+								</div>
+								<small ng-show="!formReplica.qtd_replica.$valid && formReplica.qtd_replica.$dirty">Informe apenas números :(</small>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" ng-disabled="!formReplica.$valid" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn" data-dismiss="modal">Concluir</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- Modal -->
-<div id="modalCompanhia" class="modal fade" role="dialog">
+<div id="modalCompanhia" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -124,8 +170,9 @@
         <h4 class="modal-title">Buscar companhias</h4>
       </div>
       <div class="modal-body">
+				<div class="row"><div class="col-sm-10">Não esqueça, para cadastrar um voo uma companhia também é obrigatória ;) </div></div>
       	<div class="row">
-	        <form class="col-sm-10 col-sm-offset-1" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
+	        <form class="col-sm-12" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
 	        	<div class="row">
 		        	<div class="col-sm-3 no-pad-right">
 			        	<div class="input-group">
@@ -152,16 +199,15 @@
 	        </form>
       	</div>
 	
-				<div class="panel panel-default" ng-show="Home.data.Companhia.length">
+				<div class="panel panel-default" ng-show="Home.data.Companhia.length || Home.editar">
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Companhias encontradas</div>
-
 					<div class="list-group">
 						<a class="list-group-item hover picker" ng-repeat="(key, el) in Home.data.Companhia"
 							ng-click="Home.setVal(el.codigo, 'companhia')" id="comp-{{ el.codigo }}">
-							<span class="list-header">{{ el.nome }}</span><br>
+							<span class="list-header">{{ el.sigla }} - {{ el.nome }}</span><br>
 							<span class="list-body">
-								{{ el.sigla }} | Código identificador: {{ el.codigo }}
+								Código identificador: {{ el.codigo }}
 							</span>
 		    		</a>
 					</div>
@@ -175,9 +221,34 @@
 
   </div>
 </div>
+<!-- Modal Warning
+<div ng-if="Home.warning.length">
+	<div class="modal fade" id="modalWarning">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Aviso</h4>
+				</div>
+				<div class="modal-body">
+					<div ng-repeat="aviso in Home.warning" class="p-top">{{ aviso }}</div>
+				</div>
+				<div class="modal-footer">
+					<button ng-click="Home.validate(true)" type="button" class="btn" ng-class="Home.editar?'btn-success':'btn-primary'" data-dismiss="modal">Ok, sou um animal</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript-lazy">
+		setTimeout( ()=>{
+			$( `#modalWarning` ).modal();			
+		}, 200);
+	</script>
+</div>
+-->
 
 <!-- Modal -->
-<div id="modalAeroporto" class="modal fade" role="dialog">
+<div id="modalAeroporto" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -187,9 +258,9 @@
         <h4 class="modal-title">Buscar aeroportos</h4>
       </div>
       <div class="modal-body">
-      	<div class="row"><div class="col-sm-6 col-sm-offset-1">Você pode combinar filtros ou não utilizar nenhum DIY :)</div></div>
+      	<div class="row"><div class="col-sm-6">Você pode combinar filtros ou não utilizar nenhum DIY :)</div></div>
       	<div class="row">
-	        <form class="col-lg-10 col-sm-offset-1" ng-submit="Home.search(Home.formData, 'Aeroporto')" ng-model="Home.formData">
+	        <form class="col-lg-12" ng-submit="Home.search(Home.formData, 'Aeroporto')" ng-model="Home.formData">
 	        	<div class="row">
 		        	<div class="col-sm-3 no-pad-right">
 			        	<div class="input-group">
@@ -215,6 +286,7 @@
 	        	</div>
 	        </form>
       	</div>
+      	<div class="row"><div class="col-sm-10">Não esqueça, para cadastrar um voo origem e destino são obrigatórios ;) </div></div>
 
 				<div class="panel panel-default" ng-show="Home.createData.origem || Home.createData.destino || Home.createData.escala.length">
 				  <!-- Default panel contents -->
@@ -254,12 +326,12 @@
 					</div>
 			  </div>
 	
-				<div class="panel panel-default" ng-show="Home.data.Aeroporto.length && ( Home.data.Aeroporto.length-Home.createData.escala.length-2 || !(Home.createData.origem && Home.createData.destino)  )">
+				<div class="panel panel-default" ng-show="Home.size.Aeroporto">
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Aeroportos encontrados</div>
 
 					<div class="list-group">
-						<a class="list-group-item hover" ng-repeat="(key, el) in Home.data.Aeroporto" id="list-{{ el.codigo }}">
+						<a class="list-group-item hover" ng-repeat="(key, el) in Home.data.Aeroporto | filter:Home.filterSelect" id="list-{{ el.codigo }}">
 			    		<script type="text/javascript-lazy">
 			    			$('[data-toggle="tooltip"]').tooltip(); 
 			    		</script>
@@ -268,7 +340,7 @@
 								<i  data-placement="bottom" data-toggle="tooltip" title="Selecionar escala" class="fa fa-map-signs" aria-hidden="true" ng-click="Home.setEscala(el, key)"></i>
 								<i ng-hide="Home.createData.destino" class="fa fa-map-marker"  data-placement="bottom" data-toggle="tooltip" title="Selecionar destino" aria-hidden="true" ng-click="Home.setVal(el, 'destino')"></i>
 							</span>
-			    		<span class="list-header">{{ el.nome }}</span><br>
+			    		<span class="list-header">#{{el.codigo}} {{ el.nome }}</span><br>
 							<span class="list-body">
 								{{ el.cidade }}, {{ el.estado }}
 							</span>
@@ -278,7 +350,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn" data-dismiss="modal">Confirmar</button>
+        <button type="button" ng-click="Home.validate()" ng-class="Home.editar?'btn-success':'btn-primary'" class="btn" data-dismiss="modal">Confirmar</button>
       </div>
     </div>
 

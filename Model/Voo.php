@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 20:11:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-29 00:44:48
+ * @Last Modified time: 2016-11-29 17:05:47
  */
 
 namespace Model;
@@ -46,8 +46,16 @@ class Voo {
 	public function getPartida() {
 		return $this->saida;
 	}
+	public function setPartida( $partida ) {
+		$this->saida = $partida;
+		return $this;
+	}
 	public function getChegada() {
 		return $this->chegada;
+	}
+	public function setChegada( $chegada ) {
+		$this->chegada = $chegada;
+		return $this;
 	}
 	public function getStatus() {
     return $this->status;
