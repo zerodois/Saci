@@ -69,7 +69,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<select class="select-picker input-group-btn" tabindex="{{ Home.form.modelo_aeronave }}" data-style="" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')" required>
+						<select class="select-picker input-group-btn" data-dropup-auto="false" tabindex="{{ Home.form.modelo_aeronave }}" data-style="" data-live-search="true" ng-model="Home.form.modelo_aeronave" ng-init="Home.search({}, 'Aeronave')" required>
 						<option disabled selected value> -- Selecione um modelo de aeronave -- </option>
 							<option ng-repeat="option in Home.data.Aeronave" value="{{option.modelo}}">
 								{{ option.modelo }}

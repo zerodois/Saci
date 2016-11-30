@@ -16,7 +16,7 @@ class DB {
   private static $host = 'localhost';
   private static $nome = 'Airport';
   private static $usuario = 'root';
-  private static $senha = 'baseLocal';
+  private static $senha = 'mistakenisapro';
   private static $conexao;
 
   //Funcão para execução de um comando SQL
