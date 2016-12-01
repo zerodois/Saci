@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-30 19:17:12
+ * @Last Modified time: 2016-12-01 19:37:33
  */
 
 include_once '../Model/Voo.php';
@@ -65,7 +65,7 @@ if( count($errors) ){
 	return false;
 }
 
-$repete = min ( isset( $method['qtd_replica'] ) && $method['qtd_replica'] != '' ? intval( $method[ 'qtd_replica' ] )+1 : 1,100 );
+$repete = min ( isset( $method['qtd_replica'] ) && $method['qtd_replica'] != '' ? intval( $method[ 'qtd_replica' ] )+1 : 1,101 );
 $period = null;
  
 $quantity = '';

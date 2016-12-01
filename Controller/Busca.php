@@ -3,8 +3,13 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-27 11:03:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 17:21:27
+ * @Last Modified time: 2016-12-01 19:37:48
  */
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once '../Model/Voo.php';
 include_once '../Model/Escala.php';
 include_once '../Model/Horario.php';

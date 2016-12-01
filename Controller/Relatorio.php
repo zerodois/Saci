@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-28 20:22:09
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-30 14:13:32
+ * @Last Modified time: 2016-12-01 19:47:03
  */
 
 ini_set('display_errors', 1);
@@ -25,14 +25,16 @@ $last    = -1;
 $tmp     = '';
 $comp    = ( isset( $method['companhia'] ) ) ? trim( $method['companhia'] ): '';
 
+echo "FFSDDS";
+
 if( $_GET['tipo'] == '1' )
-	echo json_encode( 'data' => getPaisSemana( $inicio, $fim ) );
+	echo json_encode( ['data' => getPaisSemana( $inicio, $fim )] );
 else if( $_GET['tipo'] == '2' )
-	echo json_encode( 'data' => getVoosCompanhia( $inicio, $fim, $comp ) );
+	echo json_encode( ['data' => getVoosCompanhia( $inicio, $fim, $comp )] );
 else if( $_GET['tipo'] == '3' )
-	echo json_encode( 'data' => getCancelados( $inicio, $fim ) );
+	echo json_encode( ['data' => getCancelados( $inicio, $fim )] );
 else if( $_GET['tipo'] == '4' )
-	echo json_encode( 'data' => ranking( $inicio, $fim ) );
+	echo json_encode( ['data' => ranking( $inicio, $fim )] );
 
 function getCancelados( $inicio, $fim ) {
 	$arr = [];
