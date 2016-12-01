@@ -3,23 +3,39 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-27 11:03:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-30 10:02:45
+ * @Last Modified time: 2016-12-01 17:21:27
  */
 include_once '../Model/Voo.php';
 include_once '../Model/Escala.php';
 include_once '../Model/Horario.php';
+include_once '../vendor/autoload.php';
 
+use Carbon\Carbon;
 use Model\Horario;
 use Model\Escala;
 use Model\Voo;
 use DB\DB;
 
+$errors = [];
 $modelo  = verify( 'codigo', "='%s'", $modelo );
 $modelo .= verify( 'origem', "='%s'", $modelo, 'cod_origem' );
 $modelo .= verify( 'destino', "='%s'", $modelo, 'cod_destino' );
 $modelo .= verify( 'companhia', "='%s'", $modelo, 'cod_companhia' );
 $modelo .= verify( 'data_partida', "='%s'", $modelo );
 $modelo .= verify( 'data_chegada', "='%s'", $modelo );
+$modelo .= verify( 'data_inicio', ">='%s'", $modelo, 'data_partida', true );
+$modelo .= verify( 'data_fim', "<='%s'", $modelo, 'data_partida', true );
+
+
+if( isset($_GET['data_inicio']) && !validateDate(trim($_GET['data_inicio']), 'dmY') )
+	$error[] = 'A data inicial informada é uma data inválida';
+if( isset($_GET['data_fim']) && !validateDate(trim($_GET['data_fim']), 'dmY') )
+	$error[] = 'A data final informada '.(count($error)?'também':'').'é uma data inválida';
+
+if( count($error) ) {
+	echo json_encode( [ 'error'=>$error ] );
+	return false;
+}
 
 if( isset( $_GET['escalas'] ) ) {
 	$arr  = $_GET['escalas'];
@@ -68,9 +84,21 @@ foreach( $all as $item ) {
 
 echo json_encode( [ 'size' => count($all), 'data'=>$arr ] );
 
-function verify( $index, $text, $str, $field='' ) {
+function verify( $index, $text, $str, $field='', $isDate = false ) {
 	if( $field=='' ) $field = $index;
-	if( isset( $_GET[ $index ] ) && trim( $_GET[ $index ] )!='' )
-		return str_replace( '%s', trim($_GET[ $index ]), ( $str!=''?' and ':'' )."{$field} {$text}" );
-	return '';
+	if( !( isset( $_GET[ $index ] ) && trim( $_GET[ $index ] )!='' ) )
+		return '';
+	$value = trim( $_GET[ $index ] );
+	if( $isDate )
+		$value = inverte( $value );
+	return str_replace( '%s', $value, ( $str!=''?' and ':'' )."{$field} {$text}" );
+}
+
+function inverte( $data ) {
+	return $data[4].$data[5].$data[6].$data[7].$data[2].$data[3].$data[0].$data[1];
+}
+
+function validateDate($date, $format = 'Y-m-d H:i:s') {
+  $d = DateTime::createFromFormat($format, $date);
+  return $d && $d->format($format) == $date;
 }

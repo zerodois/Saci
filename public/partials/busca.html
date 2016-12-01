@@ -85,20 +85,19 @@
 							<option ng-repeat="option in Busca.Companhia.data" value="{{option.codigo}}">
 								{{ option.nome }}
 							</option>
-
 						</select>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-6 no-pad-right">
 						<div class="input-group date" >
-						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data de partida" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_partida" type="text" required name="data_partida">
+						  <input class="form-control text-center" ui-mask="99/99/9999" placeholder="Data inicial" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_inicio" type="text" required name="data_inicio">
 						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>
 					</div>
 					<div class="col-lg-6 no-pad-left text-center">
-						<div class="input-group date" >
-						  <input class="form-control text-center" placeholder="Data de chegada" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_chegada" type="text" name="data_chegada">
+						<div class="input-group date">
+						  <input class="form-control text-center" placeholder="Data final" ui-mask="99/99/9999" ui-mask-placeholder ui-mask-placeholder-char="_" ng-model="Busca.data.data_fim" type="text" name="data_fm">
 						  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>
 					</div>
@@ -114,7 +113,7 @@
 </div>
 
 <!-- Modal -->
-<div id="modalBusca" class="modal fade" role="dialog">
+<div id="modalBusca" class="modal fade" role="dialog" ng-hide="loading">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -126,6 +125,7 @@
       <div class="modal-body">
 				<div class="text-center p-top" ng-if="!Busca.results">
       		Sua busca não retornou nenhum dado do sistema. Tem certeza que preencheu os campos corretamente?
+      		<div ng-repeat="erro in Busca.errors">{{ erro }}</div>
       	</div>
 				<div class="list-group">
 					<li class="list-group-item picker"
@@ -156,7 +156,14 @@
 						Origem do voo: {{ el.origem }} <br>
 						Destino do voo: {{ el.destino }}<br>
 						Aeronave responsável: {{ el.aeronave }}<br>
-						Partida: {{ el.partida }} | Chegada: {{ el.chegada }}
+						Partida: {{ el.partida }} | Chegada: {{ el.chegada }} <br>
+						<a href="javascript:void(0)" ng-if="el.escalas.length" class="danger" data-toggle="collapse" data-target="#collapse-{{ el.codigo }}">
+							Exibir as escalas deste voo</a>
+						<div class="collapse" ng-if="el.escalas.length" id="collapse-{{ el.codigo }}">
+							<span ng-repeat="escala in el.escalas" style="padding-left: 10px;">
+								{{ escala.nome }}, {{ escala.cidade }} ({{ escala.estado }}/{{ escala.pais }})<br>
+							</span>
+						</div>
 	    		</li>
 				</div>
 
@@ -171,6 +178,10 @@
 
 <script type="text/javascript-lazy">
 	$('[data-toggle="tooltip"]').tooltip();
+	$('#modalBusca').on( 'click', '[data-toggle="collapse"]', el=>{
+		$( el.target.dataset.target ).collapse('toggle');
+		return false;
+	});
 
 	setTimeout( function(){
 		$('.select-picker').selectpicker({

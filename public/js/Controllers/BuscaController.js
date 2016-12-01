@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-26 11:31:36
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-30 16:00:23
+* @Last Modified time: 2016-12-01 18:43:54
 */
 
 angular.module( 'saci' ).controller( 'BuscaController', BuscaController );
@@ -29,12 +29,13 @@ function BuscaController( $scope, $resource, URL, $location, flash ) {
 	}
 
 	function submit() {
+		self.arr = {};
 		$scope.loading = true;
-		console.log(self.data);
 		var $Search  = $resource(`${URL}/Controller/Busca.php`);
 		var $promise = $Search.get( self.data ).$promise;
 		$promise.then( json => {
 			$scope.loading = false;
+			self.errors = json.error;
 			if( !json.data ) {
 				self.arr = {};
 				self.results = 0;
