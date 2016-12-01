@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 20:11:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:40:46
+ * @Last Modified time: 2016-12-01 20:20:39
  */
 
 namespace Model;
@@ -106,7 +106,7 @@ class Voo {
 
   public static function buscar( $filtro='' ) {
 
-  	$sqlBusca   = "select Voo.* from Voo %s";
+  	$sqlBusca   = "SELECT Voo.*,sigla, Companhia.codigo AS codigo_companhia, Companhia.nome AS nome_companhia, qtd_tripulacao,qtd_passageiro, Origem.codigo AS codigo_origem, Origem.nome AS nome_origem,Origem.pais AS pais_origem, Origem.estado AS estado_origem, Origem.cidade AS cidade_origem, Destino.codigo AS codigo_destino, Destino.nome AS nome_destino, Destino.pais AS pais_destino,Destino.estado AS estado_destino,Destino.cidade AS cidade_destino FROM Voo JOIN Companhia ON Voo.cod_companhia = Companhia.codigo JOIN ModeloAeronave ON Voo.modelo_aeronave = ModeloAeronave.modelo JOIN Aeroporto AS Origem ON Voo.cod_origem = Origem.codigo JOIN Aeroporto AS Destino ON Voo.cod_destino = Destino.codigo %s";
 		$where = $filtro;
 		if( $filtro != '' )
 			$where = sprintf( 'where %s', $filtro );
@@ -116,12 +116,12 @@ class Voo {
 
 		foreach ( $vetor as $el ) {
 
-			$el[ 'origem' ]    = Aeroporto::buscar( "codigo={$el['cod_origem']}" )[0];
-			$el[ 'destino' ]   = Aeroporto::buscar( "codigo={$el['cod_destino']}" )[0];
+			$el[ 'origem' ]    = new Aeroporto([ 'codigo'=>$el['codigo_origem'], 'nome'=>$el['nome_origem'], 'cidade'=>$el['cidade_origem'], 'estado'=>$el['estado_origem'], 'pais'=>$el['pais_origem'] ]);
+			$el[ 'destino' ]    = new Aeroporto([ 'codigo'=>$el['codigo_destino'], 'nome'=>$el['nome_destino'], 'cidade'=>$el['cidade_destino'], 'estado'=>$el['estado_destino'], 'pais'=>$el['pais_destino'] ]);
 			$el[ 'saida' ]     = new Horario( [ 'hora'=> $el['hora_partida'], 'data'=>$el['data_partida'] ] );
 			$el[ 'chegada' ]   = new Horario( [ 'hora'=> $el['hora_chegada'], 'data'=>$el['data_chegada'] ] );
-			$el[ 'companhia' ] = Companhia::buscar( "codigo={$el['cod_companhia']}" )[0];
-			$el[ 'aeronave' ]  = Aeronave::buscar( "modelo='{$el['modelo_aeronave']}'" )[0];
+			$el[ 'companhia' ] = new Companhia([ 'nome'=>$el['nome_companhia'], 'codigo'=>$el['codigo_companhia'], 'sigla'=>$el['sigla'] ] );
+			$el[ 'aeronave' ]  = new Aeronave([ 'qtd_tripulacao'=>$el['qtd_tripulacao'], 'qtd_passageiro'=>$el['qtd_passageiro'], 'modelo'=>$el['modelo_aeronave'] ]);//Aeronave::buscar( "modelo='{$el['modelo_aeronave']}'" )[0];
 			
 			$arr[] = new Voo( $el );
 		}

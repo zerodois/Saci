@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-28 20:22:09
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:47:03
+ * @Last Modified time: 2016-12-01 20:07:28
  */
 
 ini_set('display_errors', 1);
@@ -24,8 +24,6 @@ $fim 		 = inverte( $method['data_fim'] );
 $last    = -1;
 $tmp     = '';
 $comp    = ( isset( $method['companhia'] ) ) ? trim( $method['companhia'] ): '';
-
-echo "FFSDDS";
 
 if( $_GET['tipo'] == '1' )
 	echo json_encode( ['data' => getPaisSemana( $inicio, $fim )] );

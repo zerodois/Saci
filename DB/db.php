@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 15:22:04
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:37:42
+ * @Last Modified time: 2016-12-01 19:52:08
  */
 
 namespace DB;
@@ -28,7 +28,7 @@ class DB {
     $query   = $conn->query( $sql );
     $resul = [ 'affected_rows' => $conn->affected_rows, 'insert_id' => $conn->insert_id, 'error' => $conn->error ];
     $conn->close();
-    
+
     return $resul;
   }
 

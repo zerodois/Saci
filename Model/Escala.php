@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-22 18:58:31
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-11-25 02:57:13
+ * @Last Modified time: 2016-12-01 19:51:44
  */
 
 namespace Model;
@@ -61,7 +61,7 @@ class Escala {
 		$arr   = [];
 
 		foreach( $vetor as $item )
-			$arr[] = new Escala( [ 'voo'=>Voo::buscar("codigo={$item['cod_voo']}")[0], 'aeroporto'=>Aeroporto::buscar("codigo={$item['cod_aeroporto']}")[0] ] );
+			$arr[] = new Escala( [ 'voo'=>Voo::buscar("Voo.codigo={$item['cod_voo']}")[0], 'aeroporto'=>Aeroporto::buscar("codigo={$item['cod_aeroporto']}")[0] ] );
 
 		return $arr;
 	}
