@@ -70,7 +70,10 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<button type="button" class="btn btn-block" id="select-companhia" data-toggle="modal" data-target="#modalCompanhia">Selecionar companhia</button>
+						<button type="button" class="btn btn-block" id="select-companhia" data-toggle="modal" data-target="#modalCompanhia">
+							<span ng-if="Home.editar">{{ Home.data.Companhia[0].sigla }} - {{ Home.data.Companhia[0].nome }}</span>
+							<span ng-if="!Home.editar">Selecionar companhia</span>
+						</button>
 					</div>
 				</div>
 				<div class="row">
