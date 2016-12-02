@@ -114,7 +114,9 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<button type="button" data-toggle="modal" data-target="#modalReplica" class="btn btn-block">Replicar voo</button>
+						<button type="button" data-toggle="modal" data-target="#modalReplica" class="btn btn-block">
+							{{ Home.form.intervalo_replica && Home.form.unidade_replica && Home.form.qtd_replica ? 'Alterar réplica' : 'Replicar voo' }}
+						</button>
 					</div>
 				</div>
 				<div class="row">
@@ -130,7 +132,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" ng-click="Home.clear()" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Replicar voo</h4>
 				<small style="padding-left: 15px">O limite para periodicidade é de 1 ano. No máximo serão geradas 100 cópias.</small>
 			</div>
@@ -144,7 +146,7 @@
 							  		placeholder="Intervalo" ng-model="Home.form.intervalo_replica" type="text" required name="intervalo_replica">
 									<span class="input-group-addon"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
 								</div>
-								<small ng-show="!formReplica.intervalo_replica.$valid && formReplica.intervalo_replica.$dirty">Informe apenas números :(</small>
+								<small ng-show="!formReplica.intervalo_replica.$valid && formReplica.intervalo_replica.$dirty">Informe apenas números</small>
 							</div>
 							<div class="col-sm-6 no-pad-left">
 								<select class="select-picker input-group-btn" ng-model="Home.form.unidade_replica" required>
@@ -162,7 +164,7 @@
 								  	placeholder="Quantidade de voos" ng-model="Home.form.qtd_replica" type="text" required name="qtd_replica">
 								  <span class="input-group-addon"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
 								</div>
-								<small ng-show="!formReplica.qtd_replica.$valid && formReplica.qtd_replica.$dirty">Informe apenas números :(</small>
+								<small ng-show="!formReplica.qtd_replica.$valid && formReplica.qtd_replica.$dirty">Informe apenas números</small>
 							</div>
 						</div>
 					</div>
@@ -191,19 +193,19 @@
 	        	<div class="row">
 		        	<div class="col-sm-3 no-pad-right">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formDataC.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
 		        	<div class="col-sm-3 no-pad-right no-pad-left">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formDataC.sigla" class="form-control" placeholder="Sigla" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
 		        	<div class="col-sm-3 no-pad-right no-pad-left">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formDataC.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
@@ -282,19 +284,19 @@
 	        	<div class="row">
 		        	<div class="col-sm-3 no-pad-right">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formData.nome" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
 		        	<div class="col-sm-3 no-pad-right no-pad-left">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formData.cidade" class="form-control" placeholder="Cidade" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>
 		        	<div class="col-sm-3 no-pad-left no-pad-right">
 			        	<div class="input-group">
-								  <span class="input-group-addon" id="sizing-addon2">@</span>
+								  <span class="input-group-addon" id="sizing-addon2">#</span>
 								  <input type="text" ng-model="Home.formData.codigo" class="form-control" placeholder="Código identificador" aria-describedby="sizing-addon2">
 								</div>
 		        	</div>

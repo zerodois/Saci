@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:21:18
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-12-01 22:49:27
+* @Last Modified time: 2016-12-02 01:41:07
 */
 
 var app = angular.module('saci');
@@ -30,6 +30,7 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	self.errors    = [];
 	self.warning   = [];
 	self.alert     = false;
+	self.clear     = clear;
 	self.filterSelect = filterSelect;
 
 	function filterSelect(obj) {
@@ -50,6 +51,11 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	} else {
 		$scope.title = 'Cadastro de voos';
 		$scope.color = 1;		
+	}
+
+	function clear() {
+		self.form.intervalo_replica = '';
+		self.form.qtd_replica = '';
 	}
 
 	function validate( ) {

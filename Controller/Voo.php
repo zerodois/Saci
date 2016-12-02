@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 23:40:43
+ * @Last Modified time: 2016-12-02 01:32:20
  */
 
 include_once '../Model/Voo.php';
@@ -39,15 +39,17 @@ $errors    = [];
 $data_p    = null;
 $data_c    = null;
 
-if( isset($method['edit']) ) {
-	$arr['codigo'] = $method['edit'];
-	$arr['status'] = $method['status'];
-} else
-	$arr['status'] = 'ativo';
-
 $now    = new Carbon();
 $data_p = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($saida->getData()).' '.formatHour($saida->getHora()) );
 $data_c = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($chegada->getData()).' '.formatHour($chegada->getHora()) );
+
+if( isset($method['edit']) ) {
+  $arr['codigo'] = $method['edit'];
+  $arr['status'] = $method['status'];
+} else if( $now->diffInHours( $data_p )<=5 )
+  $arr['status'] = 'confirmado';
+else
+  $arr['status'] = 'ativo';
 
 if ( !validateDate( formatDate($saida->getData()).' '.formatHour($saida->getHora()) ) )
 	$errors[] = 'Data/hora de partida no formato inválido';
