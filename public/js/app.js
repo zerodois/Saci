@@ -6,7 +6,7 @@
 */
 
 var app = angular.module('saci', ['ngRoute', 'ngResource', 'ngLoadScript', 'ui.mask']);
-app.constant( 'URL', 'http://localhost/saci' );
+app.constant( 'URL', 'http://localhost/airport' );
 app.constant( 'AEROPORTO', 1 );
 
 app.factory( 'flash', function($rootScope) {
