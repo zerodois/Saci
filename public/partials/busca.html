@@ -71,19 +71,10 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<select class="select-picker input-group-btn" ng-model="Busca.data.escalas" multiple data-actions-box="true" data-live-search="true" required title="-- Qualquer escala --"  data-selected-text-format="count > 1">
-							<option ng-repeat="option in Busca.Aeroporto.data" value="{{option.codigo}}">
-								{{ option.nome }}
-							</option>
-						</select>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
 						<select class="select-picker input-group-btn" data-style="" ng-model="Busca.data.companhia" data-live-search="true" required>
 							<option selected value> -- Qualquer companhia -- </option>
 							<option ng-repeat="option in Busca.Companhia.data" value="{{option.codigo}}">
-								{{ option.nome }}
+								{{ option.sigla }} - {{ option.nome }}
 							</option>
 						</select>
 					</div>
@@ -155,7 +146,8 @@
 						<strong>VOO #{{ el.codigo }}</strong><br>
 						Origem do voo: {{ el.origem }} <br>
 						Destino do voo: {{ el.destino }}<br>
-						Aeronave responsável: {{ el.aeronave }}<br>
+						Companhia responsável: {{ el.companhia.sigla }} - {{ el.companhia.nome }}<br>
+						Modelo da aeronave designada: {{ el.aeronave }}<br>
 						Partida: {{ el.partida }} | Chegada: {{ el.chegada }} <br>
 						<a href="javascript:void(0)" ng-if="el.escalas.length" class="danger" data-toggle="collapse" data-target="#collapse-{{ el.codigo }}">
 							Exibir as escalas deste voo</a>

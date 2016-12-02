@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-22 18:58:31
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:51:44
+ * @Last Modified time: 2016-12-01 20:35:36
  */
 
 namespace Model;
@@ -17,7 +17,7 @@ class Escala {
 	private $voo;
 	private $aeroporto;
 
-	private static $sqlBusca = "select * from Escala %s";
+	private static $sqlBusca = "select Escala.*, Aeroporto.* from Escala inner join Aeroporto on Escala.cod_aeroporto=Aeroporto.codigo %s";
 
 	public function __construct( $data ) {
 		$this->voo 			 = array_key_exists( 'voo', $data ) ? $data['voo'] : null;
@@ -60,8 +60,11 @@ class Escala {
 		$vetor = DB::executarConsulta( sprintf( self::$sqlBusca, $where ) );
 		$arr   = [];
 
-		foreach( $vetor as $item )
-			$arr[] = new Escala( [ 'voo'=>Voo::buscar("Voo.codigo={$item['cod_voo']}")[0], 'aeroporto'=>Aeroporto::buscar("codigo={$item['cod_aeroporto']}")[0] ] );
+		foreach( $vetor as $item ) {
+			$aeroporto = new Aeroporto( $item );
+			$voo       = new Voo( ['aeroporto'=>$aeroporto] );
+			$arr[] = new Escala( [ 'voo'=>$voo, 'aeroporto'=>Aeroporto::buscar("codigo={$item['cod_aeroporto']}")[0] ] );
+		}
 
 		return $arr;
 	}

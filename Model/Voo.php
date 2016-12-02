@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 20:11:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 20:20:39
+ * @Last Modified time: 2016-12-01 21:23:27
  */
 
 namespace Model;
@@ -108,8 +108,12 @@ class Voo {
 
   	$sqlBusca   = "SELECT Voo.*,sigla, Companhia.codigo AS codigo_companhia, Companhia.nome AS nome_companhia, qtd_tripulacao,qtd_passageiro, Origem.codigo AS codigo_origem, Origem.nome AS nome_origem,Origem.pais AS pais_origem, Origem.estado AS estado_origem, Origem.cidade AS cidade_origem, Destino.codigo AS codigo_destino, Destino.nome AS nome_destino, Destino.pais AS pais_destino,Destino.estado AS estado_destino,Destino.cidade AS cidade_destino FROM Voo JOIN Companhia ON Voo.cod_companhia = Companhia.codigo JOIN ModeloAeronave ON Voo.modelo_aeronave = ModeloAeronave.modelo JOIN Aeroporto AS Origem ON Voo.cod_origem = Origem.codigo JOIN Aeroporto AS Destino ON Voo.cod_destino = Destino.codigo %s";
 		$where = $filtro;
-		if( $filtro != '' )
-			$where = sprintf( 'where %s', $filtro );
+		if( $filtro != '' ) {
+			if( explode( " ", $filtro )[0]=="Inner" )
+				$where = $filtro;
+			else
+				$where = sprintf( 'where %s', $filtro );
+		}
 
 		$vetor = DB::executarConsulta( sprintf( $sqlBusca, $where ) );
 		$arr   = [];
@@ -161,6 +165,7 @@ class Voo {
   	$last = -1;
 		$tmp     = '';
 		$json = [];
+
 		$arr  = DB::executarConsulta( $sqlVoos );
 		$var;
 

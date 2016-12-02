@@ -53,7 +53,7 @@
 				<br>
 				<div class="row text-ident">
 					<div class="col-sm-12">
-						Lembrando ainda que se você veio aqui por engano, pode voltar a página inicial através do botão "Cancelar", ou ainda atráves da barra de navegação
+						Lembrando ainda que se você veio aqui por engano, pode voltar a página inicial através da barra de navegação
 					</div>
 				</div>
 			</div>
@@ -124,8 +124,9 @@
         <h4 class="modal-title">{{ Relatorio.types[ Relatorio.form.tipo-1 ] }}</h4>
       </div>
       <div class="modal-body pad-0">
-      	<div class="text-center p-top" ng-if="!Relatorio.resp.data.length">
+      	<div class="text-center p-top" ng-if="!Relatorio.resp.total">
       		Não existem dados neste período de tempo para montar um relatório :(
+      		<div ng-repeat="erro in Relatorio.errors">{{ erro }}</div>
       	</div>
 				<ul class="list-group" ng-if="Relatorio.form.tipo==1">
 					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp">

@@ -3,12 +3,13 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-27 11:03:11
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:37:48
+ * @Last Modified time: 2016-12-01 22:09:54
  */
-
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+*/
 
 include_once '../Model/Voo.php';
 include_once '../Model/Escala.php';
@@ -22,7 +23,7 @@ use Model\Voo;
 use DB\DB;
 
 $errors = [];
-$modelo  = verify( 'codigo', "='%s'", $modelo );
+$modelo  = verify( 'codigo', "='%s'", $modelo, 'Voo.codigo' );
 $modelo .= verify( 'origem', "='%s'", $modelo, 'cod_origem' );
 $modelo .= verify( 'destino', "='%s'", $modelo, 'cod_destino' );
 $modelo .= verify( 'companhia', "='%s'", $modelo, 'cod_companhia' );
@@ -32,24 +33,14 @@ $modelo .= verify( 'data_inicio', ">='%s'", $modelo, 'data_partida', true );
 $modelo .= verify( 'data_fim', "<='%s'", $modelo, 'data_partida', true );
 
 
-if( isset($_GET['data_inicio']) && !validateDate(trim($_GET['data_inicio']), 'dmY') )
+if( isset($_GET['data_inicio']) && $_GET['data_inicio']!='' && !validateDate(trim($_GET['data_inicio']), 'dmY') )
 	$error[] = 'A data inicial informada é uma data inválida';
-if( isset($_GET['data_fim']) && !validateDate(trim($_GET['data_fim']), 'dmY') )
-	$error[] = 'A data final informada '.(count($error)?'também':'').'é uma data inválida';
+if( isset($_GET['data_fim']) && $_GET['data_fim']!='' && !validateDate(trim($_GET['data_fim']), 'dmY') )
+	$error[] = 'A data final informada '.(count($error)?'também ':'').'é uma data inválida';
 
 if( count($error) ) {
 	echo json_encode( [ 'error'=>$error ] );
 	return false;
-}
-
-if( isset( $_GET['escalas'] ) ) {
-	$arr  = $_GET['escalas'];
-	$size = count( $arr );
-
-	$modelo = ( $modelo == '' )?"Escala.cod_aeroporto = '{$arr[ $i ]}'":"and Escala.cod_aeroporto = '{$arr[ $i ]}'";
-	for( $i=1; $i<$size; $i++ )
-		$modelo .= "and Escala.cod_aeroporto = '{$arr[ $i ]}'";
-	$modelo .= "Inner join Escala on Escala.cod_voo=Voo.codigo";
 }
 
 $all = Voo::buscar( $modelo );

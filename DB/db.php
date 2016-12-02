@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-21 15:22:04
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:52:08
+ * @Last Modified time: 2016-12-01 21:58:36
  */
 
 namespace DB;
@@ -21,6 +21,11 @@ class DB {
 
   //Funcão para execução de um comando SQL
   public static function executarComando( $sql ) {
+
+    /* Arquivo de log */
+    $fp = fopen( "log.txt", "a+" );
+    $escreve = fwrite( $fp, $sql );
+    fclose( $fp );
 
     //Criação do objeto para a execução do comando
     $conn  	 = mysqli_connect( self::$host, self::$usuario, self::$senha, self::$nome );
@@ -47,6 +52,7 @@ class DB {
   //Funcão para execução de uma busca na base de dados
   public static function executarConsulta( $sql ) {
 
+    //echo "<br>$sql<br>";
     //Criação do objeto para a execução do comando
 		$conn  = mysqli_connect( self::$host, self::$usuario, self::$senha, self::$nome );
     $conn->set_charset( 'utf8' );

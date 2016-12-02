@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-28 18:57:24
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-30 16:01:29
+* @Last Modified time: 2016-12-01 21:51:03
 */
 
 var app = angular.module('saci');
@@ -27,7 +27,11 @@ function RelatorioController( $scope, URL, $resource ) {
 		console.log( self.form );
 		$req  = $resource(`${URL}/Controller/Relatorio.php`);
 		$prom = $req.get( self.form ).$promise;
-		$prom.then( json => { $scope.loading = false; self.resp = json.data; console.log(json.data); }, err=>{$scope.loading = false;} );
+		$prom.then( json => {
+			console.log(json);
+			if( json.error ) self.errors = json.error;
+			$scope.loading = false; self.resp = json.data;
+		}, err=>{$scope.loading = false;} );
 	}
 
 	function load( model ) {

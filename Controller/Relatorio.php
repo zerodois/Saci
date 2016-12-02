@@ -3,13 +3,13 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-28 20:22:09
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 20:07:28
+ * @Last Modified time: 2016-12-01 22:11:40
  */
-
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+*/
 include_once '../DB/db.php';
 include_once '../Model/Companhia.php';
 include_once '../Model/Voo.php';
@@ -24,6 +24,17 @@ $fim 		 = inverte( $method['data_fim'] );
 $last    = -1;
 $tmp     = '';
 $comp    = ( isset( $method['companhia'] ) ) ? trim( $method['companhia'] ): '';
+$errors  = [];
+
+if( $inicio !='' && !validateDate( $inicio, 'Y-m-d' ) )
+	$errors[] = 'A data inicial informada é uma data inválida';
+if( $fim !='' && !validateDate( $fim, 'Y-m-d' ) )
+	$errors[] = 'A data final informada '.(count($errors)?'também ':'').'é uma data inválida';
+if( count($errors) ) {
+	echo json_encode( [ 'error'=>$errors ] );
+	return false;
+}
+
 
 if( $_GET['tipo'] == '1' )
 	echo json_encode( ['data' => getPaisSemana( $inicio, $fim )] );
@@ -64,4 +75,9 @@ function ranking( $inicio, $fim ) {
 
 function inverte( $data ) {
 	return $data[4].$data[5].$data[6].$data[7].'-'.$data[2].$data[3].'-'.$data[0].$data[1];
+}
+
+function validateDate($date, $format = 'Y-m-d H:i:s') {
+  $d = DateTime::createFromFormat($format, $date);
+  return $d && $d->format($format) == $date;
 }

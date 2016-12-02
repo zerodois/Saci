@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 19:37:33
+ * @Last Modified time: 2016-12-01 22:07:52
  */
 
 include_once '../Model/Voo.php';
@@ -50,9 +50,9 @@ $data_p = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($saida->getData())
 $data_c = Carbon::createFromFormat( 'Y-m-d H:i:s', formatDate($chegada->getData()).' '.formatHour($chegada->getHora()) );
 
 if ( !validateDate( formatDate($saida->getData()).' '.formatHour($saida->getHora()) ) )
-	$errors[] = 'Data de partida no formato inválido';
+	$errors[] = 'Data/hora de partida no formato inválido';
 if ( !validateDate( formatDate($chegada->getData()).' '.formatHour($chegada->getHora()) ) )
-	$errors[] = 'Data de chegada no formato inválido';
+	$errors[] = 'Data/hora de chegada no formato inválido';
 
 if( count($errors) ){
 	echo json_encode( [ 'erro' => $errors ] );
