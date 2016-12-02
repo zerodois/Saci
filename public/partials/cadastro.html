@@ -56,7 +56,7 @@
 		</div>
 		<div class="col-sm-4 window">
 			<div class="errors col-sm-10" ng-show="Home.errors.length || Home.warning.length">
-				<div ng-repeat="erro in Home.errors track by $index">{{ erro }}</div>
+				<div ng-hide="Home.warning.length" ng-repeat="erro in Home.errors track by $index">{{ erro }}</div>
 				<div ng-repeat="erro in Home.warning track by $index">{{ erro }}</div>
 			</div>
 			<form ng-submit="Home.cadastrar()" name="formDados" novalidate>
@@ -186,7 +186,6 @@
         <h4 class="modal-title">Buscar companhias</h4>
       </div>
       <div class="modal-body">
-				<div class="row"><div class="col-sm-10">Não esqueça, para cadastrar um voo uma companhia também é obrigatória ;) </div></div>
       	<div class="row">
 	        <form class="col-sm-12" ng-submit="Home.search(Home.formDataC, 'Companhia')" ng-model="Home.formDataC">
 	        	<div class="row">
@@ -215,7 +214,10 @@
 	        </form>
       	</div>
 	
-				<div class="panel panel-default" ng-show="Home.data.Companhia.length || Home.editar">
+				<div class="text-center p-top" ng-show="!Home.size.Companhia && Home.data.Companhia">
+      		Sua busca não retornou nenhum dado do sistema. Tem certeza que preencheu os campos corretamente?
+      	</div>
+				<div class="panel panel-default" ng-show="Home.size.Companhia || Home.editar">
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Companhias encontradas</div>
 					<div class="list-group">
@@ -302,8 +304,6 @@
 	        	</div>
 	        </form>
       	</div>
-      	<div class="row"><div class="col-sm-10">Não esqueça, para cadastrar um voo origem e destino são obrigatórios ;) </div></div>
-
 				<div class="panel panel-default" ng-show="Home.createData.origem || Home.createData.destino || Home.createData.escala.length">
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Aeroportos selecionados</div>
@@ -341,7 +341,9 @@
 		    		</a>
 					</div>
 			  </div>
-	
+				<div class="text-center p-top" ng-show="!Home.size.Aeroporto && Home.data.Aeroporto">
+      		Sua busca não retornou nenhum dado do sistema. Tem certeza que preencheu os campos corretamente?
+      	</div>
 				<div class="panel panel-default" ng-show="Home.size.Aeroporto">
 				  <!-- Default panel contents -->
 				  <div class="panel-heading">Aeroportos encontrados</div>

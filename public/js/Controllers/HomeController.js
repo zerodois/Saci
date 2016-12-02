@@ -2,7 +2,7 @@
 * @Author: Felipe J. L. Rita
 * @Date:   2016-11-24 12:21:18
 * @Last Modified by:   Felipe J. L. Rita
-* @Last Modified time: 2016-11-30 17:08:06
+* @Last Modified time: 2016-12-01 22:49:27
 */
 
 var app = angular.module('saci');
@@ -15,11 +15,11 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	self.form = {};
 	self.editar = $routeParams.id ? true : false;
 	self.data = {};
-	self.data.Aeroporto = [];
-	self.data.Companhia = [];
+	//self.data.Aeroporto = [];
+	//self.data.Companhia = [];
 	self.field      = '';
 	self.createData = {};
-	self.size       = {};
+	self.size       = { Aeroporto:0,  };
 	self.createData.escala = [];
 	self.setVal    = setVal;
 	self.setEscala = setEscala;
@@ -94,11 +94,12 @@ function HomeController( $resource, URL, $scope, $routeParams, AEROPORTO, $locat
 	function search( data, destiny, promise ){
 
 		$scope.loading = true;
+		self.size[ destiny ] = 0;
 		let $Service = $resource( `${URL}/Controller/${destiny}.php` );
 		if( promise ) return $Service.get( data ).$promise;
 		let $promise = $Service.get( data ).$promise;
 		//Atribui o resultado da busca ao vetor aeroporto
-		$promise.then( json=>{ $scope.loading = false; self.data[ destiny ] = json.data; self.size[ destiny ] = json.data.length; }, err=>{console.log(err);});
+		$promise.then( json=>{ $scope.loading = false; self.data[ destiny ] = json.data || []; self.size[ destiny ] = json.data.length; }, err=>{console.log(err);});
 	};
 
 	function init() {
