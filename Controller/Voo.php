@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-25 01:06:41
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 23:39:49
+ * @Last Modified time: 2016-12-01 23:40:43
  */
 
 include_once '../Model/Voo.php';
@@ -61,7 +61,7 @@ if( count($errors) ){
 	echo json_encode( [ 'erro' => ['Data/hora informada anterior a data atual'] ] );
 	return false;
 } else if( $data_c->lte( $data_p ) ){
-	echo json_encode( [ 'erro' => ['Diferença entre data/hora de partida e chegada inválida :('] ] );
+	echo json_encode( [ 'erro' => ['Diferença entre data/hora de partida e chegada inválida'] ] );
 	return false;
 }
 

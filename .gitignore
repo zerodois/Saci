@@ -1,4 +1,5 @@
 .phpintel
+log.txt
 composer.lock
 bower_components
 
