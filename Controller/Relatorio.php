@@ -3,7 +3,7 @@
  * @Author: Felipe J. L. Rita
  * @Date:   2016-11-28 20:22:09
  * @Last Modified by:   Felipe J. L. Rita
- * @Last Modified time: 2016-12-01 22:11:40
+ * @Last Modified time: 2016-12-01 23:29:28
  */
 /*
 ini_set('display_errors', 1);
@@ -35,15 +35,14 @@ if( count($errors) ) {
 	return false;
 }
 
-
 if( $_GET['tipo'] == '1' )
-	echo json_encode( ['data' => getPaisSemana( $inicio, $fim )] );
+	echo json_encode( getPaisSemana( $inicio, $fim ) );
 else if( $_GET['tipo'] == '2' )
-	echo json_encode( ['data' => getVoosCompanhia( $inicio, $fim, $comp )] );
+	echo json_encode( getVoosCompanhia( $inicio, $fim, $comp ) );
 else if( $_GET['tipo'] == '3' )
-	echo json_encode( ['data' => getCancelados( $inicio, $fim )] );
+	echo json_encode( getCancelados( $inicio, $fim ) );
 else if( $_GET['tipo'] == '4' )
-	echo json_encode( ['data' => ranking( $inicio, $fim )] );
+	echo json_encode( ranking( $inicio, $fim ) );
 
 function getCancelados( $inicio, $fim ) {
 	$arr = [];
@@ -52,16 +51,18 @@ function getCancelados( $inicio, $fim ) {
 	foreach( $res as $r )
 		$arr[] = [ 'contagem'=>$r['contagem'], 'codigo'=>$r['companhia']->getCodigo(), 'nome'=>$r['companhia']->getNome(), 'sigla'=>$r['companhia']->getSigla() ];
 
-	return [ 'data'=>$arr ];
+	return [ 'data'=>$arr, 'total'=>count($arr) ];
 }
 
 function getVoosCompanhia( $inicio, $fim, $companhia ) {
 	$c = new Companhia( ['codigo'=>$companhia ] );
-	return $c->obterContagemVoos( $inicio, $fim );
+	$arr = $c->obterContagemVoos( $inicio, $fim );
+	return [ 'data' => $arr, 'total'=> count($arr) ];
 }
 
 function getPaisSemana( $inicio, $fim ) {
-	return Voo::obterNumVoosPorPais( $inicio, $fim );
+	$arr = Voo::obterNumVoosPorPais( $inicio, $fim );
+	return [ 'data' => $arr, 'total'=>count($arr) ];
 }
 
 function ranking( $inicio, $fim ) {
@@ -70,7 +71,7 @@ function ranking( $inicio, $fim ) {
 	foreach( $res as $r )
 		$arr[] = [ 'contagem'=>$r['contagem'], 'codigo'=>$r['voo']->getCodigo(), 'origem'=>$r['voo']->getOrigem()->getNome().', '.$r['voo']->getOrigem()->getCidade().'-'.$r['voo']->getOrigem()->getEstado().' ('.$r['voo']->getOrigem()->getPais().')', 'destino'=>$r['voo']->getDestino()->getNome().', '.$r['voo']->getDestino()->getCidade().'-'.$r['voo']->getDestino()->getEstado().' ('.$r['voo']->getDestino()->getPais().')', 'codigo'=>$r['voo']->getCodigo() ];
 
-	return [ 'data'=>$arr ];
+	return [ 'data'=>$arr, 'total'=>count($arr) ];
 }
 
 function inverte( $data ) {

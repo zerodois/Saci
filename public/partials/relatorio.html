@@ -124,12 +124,12 @@
         <h4 class="modal-title">{{ Relatorio.types[ Relatorio.form.tipo-1 ] }}</h4>
       </div>
       <div class="modal-body pad-0">
-      	<div class="text-center p-top" ng-if="!Relatorio.resp.total">
+      	<div class="text-center p-top" ng-hide="Relatorio.resp.total">
       		<div ng-hide="Relatorio.errors.length">Não existem dados neste período de tempo para montar um relatório :(</div>
       		<div ng-repeat="erro in Relatorio.errors">{{ erro }}</div>
       	</div>
 				<ul class="list-group" ng-if="Relatorio.form.tipo==1">
-					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp">
+					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp.data">
 						<div class="list-header">De {{ key }} até {{ item.fim }}</div>
 						<div class="list" ng-repeat="pais in item.dados">
 							{{ pais.pais }}: {{ pais.contagem }}
@@ -139,7 +139,7 @@
 				<ul class="list-group" ng-if="Relatorio.form.tipo==3">
 					<div class="row" style="padding: 10px;" ng-show="Relatorio.resp.data">
 						<div class="col-sm-10 col-sm-offset-1">
-							<input type="text" class="form-control" ng-model="Relatorio.filtro">
+							<input type="text" class="form-control" ng-show="Relatorio.resp.total" ng-model="Relatorio.filtro">
 						</div>
 					</div>
 					<li class="list-group-item list-cool" ng-repeat="(key, item) in Relatorio.resp.data | filter: Relatorio.filtro">
@@ -166,23 +166,23 @@
 						</div>
 					</li>
 				</ul>
-				<ul class="list-group" ng-if="Relatorio.form.tipo==2 && Relatorio.resp.total">
+				<ul class="list-group" ng-if="Relatorio.form.tipo==2 && Relatorio.resp.data.total">
 					<li class="list-group-item list-cool">
 						<div class="list-header">#{{ Relatorio.form.companhia }} {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].sigla }} - {{ Relatorio.Companhia.data[ Relatorio.form.companhia-1 ].nome }}</div>
 						<div class="list">
-							<strong>Total de voos no período selecionado: {{ Relatorio.resp.total }}</strong>
+							<strong>Total de voos no período selecionado: {{ Relatorio.resp.data.total }}</strong>
 						</div>
 						<div class="list">
-							<span>Voos ativos: {{ Relatorio.resp.ativos }}</span><br>
+							<span>Voos ativos: {{ Relatorio.resp.data.ativos }}</span><br>
 						</div>
 						<div class="list">
-							<span>Voos confirmados: {{ Relatorio.resp.confirmados }}</span><br>
+							<span>Voos confirmados: {{ Relatorio.resp.data.confirmados }}</span><br>
 						</div>
 						<div class="list">
-							<span>Voos finalizados: {{ Relatorio.resp.finalizados }}</span><br>
+							<span>Voos finalizados: {{ Relatorio.resp.data.finalizados }}</span><br>
 						</div>
 						<div class="list">
-							<span>Voos cancelados: {{ Relatorio.resp.cancelados }}</span><br>
+							<span>Voos cancelados: {{ Relatorio.resp.data.cancelados }}</span><br>
 						</div>
 					</li>
 				</ul>
