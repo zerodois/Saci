@@ -111,7 +111,7 @@ for( $i=1; $i<=$repete; $i++ ) {
 
   $partida = [ 'data'=>$data_p->format('Ymd'), 'hora'=>$data_p->format('His') ];
   $chegada = [ 'data'=>$data_c->format('Ymd'), 'hora'=>$data_c->format('His') ];
-  $voo->setPartida( new Horario( $partida ) )->setChegada( new Horario( $chegada ) );
+  $voo->setPartida( new Horario( $partida ) )->setChegada( new Horario( $chegada ) )->setStatus( 'ativo' );
 }
 
 if( isset( $method['edit'] ) )
